@@ -2,10 +2,20 @@ import "swiper/css";
 import CoolButton from "./CoolButton";
 import LetterSwipe from "./LetterSwipe";
 import ReactModal from "react-modal";
-import { CircleHelp, KeyRound, Undo } from "lucide-react";
+import { CircleHelp, KeyRound, LockKeyholeOpen, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
+import { emojis, url } from "./config";
 import { games } from "./games";
 import { dateFormat, isValidWord, toCombo, toWord } from "./utils";
+
+import {
+  LinkedinIcon,
+  LinkedinShareButton,
+  ThreadsIcon,
+  ThreadsShareButton,
+  TwitterShareButton,
+  XIcon,
+} from "react-share";
 
 // Import Swiper styles
 
@@ -19,13 +29,24 @@ export default function App() {
   const [gameState, setGameState] = useState(0);
   const [canSubmit, setCanSubmit] = useState(false);
   const [usedWords, setUsedWords] = useState([gameWords[0]]);
-  const [combo, setCombo] = useState(toCombo(gameWords[0]));
-  const [lastCombo, setLastCombo] = useState(gameWords[0]);
+  const [combo, setCombo] = useState([0, 0, 0, 0]);
+  const [lastCombo, setLastCombo] = useState([0, 0, 0, 0]);
+  const [winText, setWinText] = useState("");
+
+  useEffect(() => {
+    if (gameState === 1) {
+      setCombo(toCombo(gameWords[0]));
+      setLastCombo(toCombo(gameWords[0]));
+    }
+    if (gameState > 2) {
+      setModal(true);
+    }
+  }, [gameState, gameWords]);
 
   useEffect(() => {
     // Check if the word is valid
 
-    if (combo !== toCombo(usedWords[usedWords.length - 1])) {
+    if (gameState === 1 && combo !== toCombo(usedWords[usedWords.length - 1])) {
       // Check how many differences there are
       let count = 0;
       combo.forEach((letter, i) => {
@@ -108,9 +129,18 @@ export default function App() {
   // Check for win or loss
   useEffect(() => {
     if (toWord(combo) === target) {
-      alert("You win");
+      let s = "";
+      for (let i = 0; i < moves; i++) {
+        s += emojis[1];
+      }
+
+      for (let i = 0; i < 10 - moves; i++) {
+        s += emojis[0];
+      }
+      setWinText(s);
+      setGameState(3);
     } else if (moves >= 10) {
-      alert("You lose");
+      setGameState(4);
     }
   }, [moves]);
 
@@ -120,32 +150,90 @@ export default function App() {
   return (
     <div className="pb-10 h-dvh w-dvw relative">
       <ReactModal isOpen={modal} className={"welcome-modal"}>
-        <div className="shadow flex flex-col items-center justify-between border-neutral-50 border-2 h-3/4 w-[90%] text-center text-neutral-950 text-lg rounded-4xl bg-white py-10 px-7">
-          LOGO
-          <div className="flex-col flex gap-8">
-            <span>
-              Switch the letters on the combo lock one at a time to match the
-              <span className="text-blue-500"> target word</span>
-            </span>
-            <p>
-              The combo lock must display a valid english word inorder to switch
-              a letter
-            </p>
-            <p>
-              Can you match the{" "}
-              <span className="text-blue-500"> target word</span> in under 10
-              switches?
-            </p>
-          </div>
-          <button
-            onClick={() => {
-              setModal(false);
-              gameState === 0 && setGameState(1);
-            }}
-            className="bg-blue-500 py-3 px-6 text-xl rounded-2xl text-white"
-          >
-            {gameState === 0 ? "Play" : "Back"}
-          </button>
+        <div className="shadow flex flex-col items-center justify-between gap-6 border-neutral-50 border-2 h-auto w-[90%] text-center text-neutral-950 text-lg rounded-4xl bg-white py-10 px-7">
+          {gameState < 2 ? (
+            <>
+              <img src="10switches.png" className="h-24 w-auto" />
+              <div className="flex-col flex gap-8 text-neutral-700">
+                <div>
+                  <p>Switch letters of the starting word</p>
+                  <p>one-by-one to turn it into the</p>
+                  <span className="text-blue-500 inline-flex items-center">
+                    <KeyRound size={18} className="mr-1" /> Code Word
+                  </span>
+                </div>
+                <div>
+                  <p>Switching a letter must result in</p>
+                  <p>a new valid English word</p>
+                </div>
+                <div>
+                  <p>
+                    Can you get to the{" "}
+                    <span className="text-blue-500"> Code Word</span>
+                  </p>
+                  <p>in under 10 switches?</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setModal(false);
+                  gameState === 0 && setGameState(1);
+                }}
+                className="bg-blue-500 py-3 cursor-pointer px-6 text-xl rounded-2xl text-white"
+              >
+                {gameState === 0 ? "Play" : "Back"}
+              </button>
+            </>
+          ) : (
+            <>
+              {/* <img src="10switches.png" className="h-24 w-auto" /> */}
+              <div className="flex-col flex w-full items-center gap-3">
+                <span className="text-xl font-semibold text-green-500 inline-flex items-center">
+                  <LockKeyholeOpen size={20} className="mr-1" /> YAHOO!!!
+                </span>
+                <img className="rounded-2xl" src="cat.gif" />
+                <div className="grid gap-1 grid-cols-10 h-2 w-full">
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <div
+                      key={i}
+                      className={`w-full h-full ${
+                        i < moves ? "bg-rose-500" : "bg-neutral-400"
+                      }`}
+                    ></div>
+                  ))}
+                </div>
+                <p className="text-3xl text-green-500 font-semibold mt-2">
+                  {moves} {moves > 1 ? "Switches" : "Switch"}
+                </p>
+                <div className="flex flex-row gap-2 mb-2 items-center justify-center">
+                  <TwitterShareButton
+                    title={`Got it in ${moves} ${winText}`}
+                    url={url}
+                  >
+                    <XIcon size={32} />
+                  </TwitterShareButton>
+                  <LinkedinShareButton
+                    title="Check out this game!"
+                    source="10 Switches"
+                    summary={winText}
+                    url={url}
+                  >
+                    <LinkedinIcon size={32} />
+                  </LinkedinShareButton>
+                  <ThreadsShareButton
+                    title={`Got it in ${moves} ${winText}`}
+                    url={url}
+                  >
+                    <ThreadsIcon size={32} />
+                  </ThreadsShareButton>
+                </div>
+                <div></div>
+                <p className="text-sm text-neutral-500">
+                  Come back tomorrow for a new challenge
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </ReactModal>
       <div className="grid gap-1 grid-cols-10 h-2 w-full">
@@ -162,7 +250,10 @@ export default function App() {
             <KeyRound size={20} />
             {gameWords[1]}
           </div>
-          <button onClick={() => setModal(true)} className="px-4">
+          <button
+            onClick={() => setModal(true)}
+            className="px-4 cursor-pointer"
+          >
             <CircleHelp />
           </button>
         </div>
