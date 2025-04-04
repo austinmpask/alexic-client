@@ -184,7 +184,7 @@ export default function App() {
                 {gameState === 0 ? "Play" : "Back"}
               </button>
             </>
-          ) : (
+          ) : gameState === 3 ? (
             <>
               {/* <img src="10switches.png" className="h-24 w-auto" /> */}
               <div className="flex-col flex w-full items-center gap-3">
@@ -205,6 +205,51 @@ export default function App() {
                 <p className="text-3xl text-green-500 font-semibold mt-2">
                   {moves} {moves > 1 ? "Switches" : "Switch"}
                 </p>
+                <div className="flex flex-row gap-2 mb-2 items-center justify-center">
+                  <TwitterShareButton
+                    title={`Got it in ${moves} ${winText}`}
+                    url={url}
+                  >
+                    <XIcon size={32} />
+                  </TwitterShareButton>
+                  <LinkedinShareButton
+                    title="Check out this game!"
+                    source="10 Switches"
+                    summary={winText}
+                    url={url}
+                  >
+                    <LinkedinIcon size={32} />
+                  </LinkedinShareButton>
+                  <ThreadsShareButton
+                    title={`Got it in ${moves} ${winText}`}
+                    url={url}
+                  >
+                    <ThreadsIcon size={32} />
+                  </ThreadsShareButton>
+                </div>
+                <div></div>
+                <p className="text-sm text-neutral-500">
+                  Come back tomorrow for a new challenge
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* <img src="10switches.png" className="h-24 w-auto" /> */}
+              <div className="flex-col flex w-full items-center gap-3">
+                <span className="text-xl font-semibold inline-flex items-center">
+                  You Lose :(
+                </span>
+                <img className="rounded-2xl" src="sadcat.png" />
+                <div className="grid gap-1 grid-cols-10 h-2 w-full">
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <div
+                      key={i}
+                      className={`w-full h-full ${"bg-rose-500"}`}
+                    ></div>
+                  ))}
+                </div>
+
                 <div className="flex flex-row gap-2 mb-2 items-center justify-center">
                   <TwitterShareButton
                     title={`Got it in ${moves} ${winText}`}
