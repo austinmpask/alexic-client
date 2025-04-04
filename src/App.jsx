@@ -153,7 +153,7 @@ export default function App() {
   return (
     <div className="pb-10 h-dvh w-dvw relative">
       <ReactModal isOpen={modal} className={"welcome-modal"}>
-        <div className="shadow flex flex-col items-center justify-between gap-6 border-neutral-50 border-2 h-auto w-[90%] text-center text-neutral-950 text-lg rounded-4xl bg-white py-10 px-7">
+        <div className="shadow flex flex-col items-center justify-between gap-6 border-neutral-50 border-2 h-auto w-[90%] sm:w-1/2 text-center text-neutral-950 text-lg rounded-4xl bg-white py-10 px-7">
           {gameState < 2 ? (
             <>
               <img src="10switches.svg" className="h-24 w-auto" />
@@ -223,7 +223,7 @@ export default function App() {
                   <ReactConfetti opacity={0.6} />
                 </span>
                 <img className="rounded-2xl" src="cat.gif" />
-                <div className="grid gap-1 grid-cols-10 h-2 w-full">
+                <div className="grid gap-1 grid-cols-10 h-2 w-full sm:w-1/2">
                   {Array.from({ length: 10 }, (_, i) => (
                     <div
                       key={i}
@@ -265,7 +265,7 @@ export default function App() {
                   You Lose :(
                 </span>
                 <img className="rounded-2xl" src="sadcat.png" />
-                <div className="grid gap-1 grid-cols-10 h-2 w-full">
+                <div className="grid gap-1 grid-cols-10 h-2 w-full sm:w-1/2">
                   {Array.from({ length: 10 }, (_, i) => (
                     <div
                       key={i}
@@ -326,8 +326,8 @@ export default function App() {
             <CircleHelp />
           </button>
         </div>
-        <div className="h-[200px] w-full px-8 select-none relative">
-          <div className="grid grid-cols-4 h-full w-full relative z-0">
+        <div className="h-[200px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
+          <div className="grid grid-cols-4 h-full w-full sm:w-1/2 relative z-0">
             <LetterSwipe i={0} val={combo} setVal={setCombo} />
             <LetterSwipe i={1} val={combo} setVal={setCombo} />
             <LetterSwipe i={2} val={combo} setVal={setCombo} />
