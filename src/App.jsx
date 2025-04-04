@@ -1,21 +1,24 @@
 import "swiper/css";
 import CoolButton from "./CoolButton";
 import LetterSwipe from "./LetterSwipe";
+import ReactConfetti from "react-confetti";
 import ReactModal from "react-modal";
-import { CircleHelp, KeyRound, LockKeyholeOpen, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
+import { RWebShare } from "react-web-share";
 import { emojis, url } from "./config";
 import { games } from "./games";
 import { dateFormat, isValidWord, toCombo, toWord } from "./utils";
 
 import {
-  LinkedinIcon,
-  LinkedinShareButton,
-  ThreadsIcon,
-  ThreadsShareButton,
-  TwitterShareButton,
-  XIcon,
-} from "react-share";
+  Check,
+  CircleHelp,
+  KeyRound,
+  Link,
+  LockKeyholeOpen,
+  MoveRight,
+  Undo,
+  X,
+} from "lucide-react";
 
 // Import Swiper styles
 
@@ -153,18 +156,45 @@ export default function App() {
         <div className="shadow flex flex-col items-center justify-between gap-6 border-neutral-50 border-2 h-auto w-[90%] text-center text-neutral-950 text-lg rounded-4xl bg-white py-10 px-7">
           {gameState < 2 ? (
             <>
-              <img src="10switches.png" className="h-24 w-auto" />
-              <div className="flex-col flex gap-8 text-neutral-700">
+              <img src="10switches.svg" className="h-24 w-auto" />
+              <div className="flex-col flex items-center gap-8 text-neutral-700">
                 <div>
                   <p>Switch letters of the starting word</p>
                   <p>one-by-one to turn it into the</p>
-                  <span className="text-blue-500 inline-flex items-center">
+                  <span className="text-blue-500 mt-1 box-glow inline-flex items-center bg-blue-100 border-blue-200 border-2 rounded-2xl py-1 px-2">
                     <KeyRound size={18} className="mr-1" /> Code Word
                   </span>
+                </div>
+                <div className="grid grid-cols-3 place-items-center w-4/6 font-semibold tracking-widest">
+                  <p className="w-full text-right">{gameWords[0]}</p>
+                  <MoveRight />
+                  <span className="text-blue-500 glow">{gameWords[1]}</span>
                 </div>
                 <div>
                   <p>Switching a letter must result in</p>
                   <p>a new valid English word</p>
+                </div>
+                <div className="grid grid-cols-3 place-items-center w-4/6 font-semibold tracking-widest">
+                  <p className="w-full text-right">FIRE</p>
+                  <MoveRight />
+                  <p className="w-full text-left relative">
+                    <span className="text-green-500">W</span>
+                    IRE
+                    <Check
+                      className="absolute text-green-500 top-[3px] -right-3"
+                      size={20}
+                    />
+                  </p>
+                  <p className="w-full text-right">FIRE</p>
+                  <MoveRight />
+                  <p className="w-full text-left relative">
+                    <span className="text-rose-500">Q</span>
+                    IRE
+                    <X
+                      className="absolute text-rose-500 top-[3px] -right-3"
+                      size={20}
+                    />
+                  </p>
                 </div>
                 <div>
                   <p>
@@ -179,7 +209,7 @@ export default function App() {
                   setModal(false);
                   gameState === 0 && setGameState(1);
                 }}
-                className="bg-blue-500 py-3 cursor-pointer px-6 text-xl rounded-2xl text-white"
+                className="bg-blue-500 box-glow py-3 cursor-pointer px-6 text-xl rounded-2xl text-white"
               >
                 {gameState === 0 ? "Play" : "Back"}
               </button>
@@ -188,8 +218,9 @@ export default function App() {
             <>
               {/* <img src="10switches.png" className="h-24 w-auto" /> */}
               <div className="flex-col flex w-full items-center gap-3">
-                <span className="text-xl font-semibold text-green-500 inline-flex items-center">
-                  <LockKeyholeOpen size={20} className="mr-1" /> YAHOO!!!
+                <span className="text-xl font-semibold  inline-flex items-center">
+                  <LockKeyholeOpen size={20} className="mr-1" /> You Win!!!
+                  <ReactConfetti opacity={0.6} />
                 </span>
                 <img className="rounded-2xl" src="cat.gif" />
                 <div className="grid gap-1 grid-cols-10 h-2 w-full">
@@ -197,7 +228,7 @@ export default function App() {
                     <div
                       key={i}
                       className={`w-full h-full ${
-                        i < moves ? "bg-rose-500" : "bg-neutral-400"
+                        i < moves ? "bg-rose-500" : "bg-neutral-300"
                       }`}
                     ></div>
                   ))}
@@ -206,30 +237,23 @@ export default function App() {
                   {moves} {moves > 1 ? "Switches" : "Switch"}
                 </p>
                 <div className="flex flex-row gap-2 mb-2 items-center justify-center">
-                  <TwitterShareButton
-                    title={`Got it in ${moves} ${winText}`}
-                    url={url}
+                  <RWebShare
+                    data={{
+                      url: url,
+                      title: `Got it in ${moves} switch${
+                        moves > 1 ? "es" : ""
+                      }!`,
+                      text: `${winText}`,
+                    }}
                   >
-                    <XIcon size={32} />
-                  </TwitterShareButton>
-                  <LinkedinShareButton
-                    title="Check out this game!"
-                    source="10 Switches"
-                    summary={winText}
-                    url={url}
-                  >
-                    <LinkedinIcon size={32} />
-                  </LinkedinShareButton>
-                  <ThreadsShareButton
-                    title={`Got it in ${moves} ${winText}`}
-                    url={url}
-                  >
-                    <ThreadsIcon size={32} />
-                  </ThreadsShareButton>
+                    <button className="cursor-pointer flex bg-blue-100 border-2 border-blue-200 text-blue-500 rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
+                      <Link size={20} /> Share
+                    </button>
+                  </RWebShare>
                 </div>
                 <div></div>
                 <p className="text-sm text-neutral-500">
-                  Come back tomorrow for a new challenge
+                  Come back tomorrow for a new challenge :)
                 </p>
               </div>
             </>
@@ -251,30 +275,22 @@ export default function App() {
                 </div>
 
                 <div className="flex flex-row gap-2 mb-2 items-center justify-center">
-                  <TwitterShareButton
-                    title={`Got it in ${moves} ${winText}`}
-                    url={url}
+                  <RWebShare
+                    disableNative={true}
+                    data={{
+                      url: url,
+                      title: "I suck at 10switches",
+                      text: "I suck at 10switches",
+                    }}
                   >
-                    <XIcon size={32} />
-                  </TwitterShareButton>
-                  <LinkedinShareButton
-                    title="Check out this game!"
-                    source="10 Switches"
-                    summary={winText}
-                    url={url}
-                  >
-                    <LinkedinIcon size={32} />
-                  </LinkedinShareButton>
-                  <ThreadsShareButton
-                    title={`Got it in ${moves} ${winText}`}
-                    url={url}
-                  >
-                    <ThreadsIcon size={32} />
-                  </ThreadsShareButton>
+                    <button className="cursor-pointer flex bg-blue-100 border-2 border-blue-200 text-blue-500 rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
+                      <Link size={20} /> Share
+                    </button>
+                  </RWebShare>
                 </div>
                 <div></div>
                 <p className="text-sm text-neutral-500">
-                  Come back tomorrow for a new challenge
+                  Come back tomorrow for a new challenge :)
                 </p>
               </div>
             </>
@@ -288,10 +304,18 @@ export default function App() {
       </div>
       <div className="py-10 h-full flex flex-col items-center justify-between">
         <div className="flex flex-row w-full justify-between px-5">
-          <button className="cursor-pointer px-4" onClick={handleUndo}>
+          <button
+            className={`cursor-pointer px-4 ${
+              usedWords.length > 1 ||
+              toWord(combo) !== usedWords[usedWords.length - 1]
+                ? "text-neutral-950"
+                : "text-neutral-300"
+            }`}
+            onClick={handleUndo}
+          >
             <Undo />
           </button>
-          <div className="select-none border-2 border-neutral-50 rounded-3xl text-lg font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-blue-500 py-3 px-4 shadow">
+          <div className="select-none border-2 box-glow border-blue-200 bg-blue-100 rounded-3xl text-lg font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-blue-500 py-3 px-4">
             <KeyRound size={20} />
             {gameWords[1]}
           </div>

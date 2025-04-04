@@ -14,7 +14,7 @@ export default function LetterSwipe({ i, val, setVal }) {
     if (swiperRef.current && prevVal.current !== val[i]) {
       // Update without triggering events
       console.log(val);
-      swiperRef.current.slideTo(val[i] + 3 === 0 ? 25 : val[i] + 2, 300);
+      swiperRef.current.slideTo(val[i] + 3 === 0 ? 25 : val[i] + 2, 450);
       prevVal.current = val[i];
     }
   }, [val, i, slideIndex]);
