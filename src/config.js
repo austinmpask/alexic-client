@@ -1,6 +1,6 @@
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 export const url = "https://10switches.com/";
-export const emojis = ["⬛", "🟥"];
+export const emojis = ["⬛", "🟪"];
 export const wordList = new Set([
   "ABET",
   "ABLE",

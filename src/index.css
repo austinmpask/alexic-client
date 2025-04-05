@@ -22,6 +22,13 @@
   background-color: rgba(194, 194, 194, 0.438);
 }
 
+.alc-modal {
+  background-image: url("alchemy.svg");
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.85);
+  background-blend-mode: lighten;
+}
+
 .glow {
   text-shadow: #fcd34dad 1px 0 10px;
 }

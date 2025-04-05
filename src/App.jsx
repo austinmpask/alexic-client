@@ -154,12 +154,12 @@ export default function App() {
   return (
     <div className="pb-10 h-dvh w-dvw relative">
       <ReactModal isOpen={modal} className={"welcome-modal"}>
-        <div className="shadow flex flex-col items-center justify-center gap-6 border-neutral-50 border-2 max-h-[90%] w-[90%] sm:w-1/2 text-center text-neutral-950 text-lg rounded-4xl bg-white py-5 px-6">
+        <div className="shadow flex flex-col items-center justify-center alc-modal gap-6 border-neutral-50 border-2 max-h-[90%] w-[90%] sm:w-1/2 text-center text-neutral-950 text-lg rounded-4xl bg-white py-5 px-5">
           {gameState < 2 ? (
             <>
               {/* <img src="10switches.svg" className="h-18 w-auto" /> */}
-              <p className="text-4xl text-purple-400 font-semibold">
-                e<span className="text-purple-900">lex</span>ir
+              <p className="text-4xl text-purple-400 select-none font-semibold">
+                a<span className="text-purple-900">lex</span>ic
               </p>
               <div className="flex-col flex items-center gap-5 text-sm text-neutral-500">
                 <div>
@@ -173,11 +173,11 @@ export default function App() {
                     <KeyRound size={18} className="mr-1" /> {gameWords[1]}
                   </span> */}
                 </div>
-                <div className="font-semibold tracking-widest flex flex-col items-center text-xl text-neutral-950 gap-2 mb-2">
-                  <span className="text-xl tracking-widest">
+                <div className="font-semibold tracking-widest flex flex-col items-center text-lg text-neutral-950 gap-2 mb-2">
+                  <span className="text-lg tracking-widest">
                     {gameWords[0]}
                   </span>
-                  <MoveDown />
+                  <MoveDown size={18} />
                   <span className="text-amber-500 mt-1 box-glow inline-flex items-center bg-amber-100 border-amber-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
                     <Pyramid size={18} className="mr-1" /> {gameWords[1]}
                   </span>
@@ -191,21 +191,21 @@ export default function App() {
                   {/* <p>a new valid English word</p> */}
                 </div>
                 <div className="grid grid-cols-3 place-items-center text-lg text-neutral-950 w-4/6 font-semibold tracking-widest">
-                  <p className="w-full text-right">CAVE</p>
+                  <p className="w-full text-right">{gameWords[0]}</p>
                   <MoveRight />
                   <p className="w-full text-left relative">
-                    <span className="text-green-500">W</span>
-                    AVE
+                    <span className="text-green-500">{gameWords[2][0]}</span>
+                    {gameWords[2].substring(1)}
                     <Check
                       className="absolute text-green-500 top-[3px] -right-8"
                       size={20}
                     />
                   </p>
-                  <p className="w-full text-right">CAVE</p>
+                  <p className="w-full text-right">{gameWords[0]}</p>
                   <MoveRight />
                   <p className="w-full text-left relative">
-                    <span className="text-rose-500">Q</span>
-                    AVE
+                    <span className="text-rose-500">{gameWords[3][0]}</span>
+                    {gameWords[3].substring(1)}
                     <X
                       className="absolute text-rose-500 top-[3px] -right-8"
                       size={20}
