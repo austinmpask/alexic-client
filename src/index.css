@@ -23,14 +23,14 @@
 }
 
 .glow {
-  text-shadow: #93c4fdad 1px 0 10px;
+  text-shadow: #fcd34dad 1px 0 10px;
 }
 
 .box-glow {
-  box-shadow: #93c4fd77 1px 0 10px;
+  box-shadow: #fde04777 1px 0 10px;
 }
 .button-glow {
-  box-shadow: #86efac77 1px 0 10px;
+  box-shadow: #d8b4fe77 1px 0 10px;
 }
 .overlay-top {
   top: 0;

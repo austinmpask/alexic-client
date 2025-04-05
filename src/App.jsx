@@ -12,11 +12,12 @@ import { dateFormat, isValidWord, toCombo, toWord } from "./utils";
 import {
   Check,
   CircleHelp,
-  KeyRound,
   Link,
-  LockKeyholeOpen,
+  MoveDown,
   MoveRight,
+  Pyramid,
   Undo,
+  WandSparkles,
   X,
 } from "lucide-react";
 
@@ -156,40 +157,55 @@ export default function App() {
         <div className="shadow flex flex-col items-center justify-between gap-6 border-neutral-50 border-2 h-auto w-[90%] sm:w-1/2 text-center text-neutral-950 text-lg rounded-4xl bg-white py-10 px-7">
           {gameState < 2 ? (
             <>
-              <img src="10switches.svg" className="h-24 w-auto" />
-              <div className="flex-col flex items-center gap-8 text-neutral-700">
+              {/* <img src="10switches.svg" className="h-18 w-auto" /> */}
+              <p className="text-4xl text-purple-400 font-semibold">
+                e<span className="text-purple-900">lex</span>ir
+              </p>
+              <div className="flex-col flex items-center gap-5 text-neutral-500">
                 <div>
-                  <p>Switch letters of the starting word</p>
-                  <p>one-by-one to turn it into the</p>
-                  <span className="text-blue-500 mt-1 box-glow inline-flex items-center bg-blue-100 border-blue-200 border-2 rounded-2xl py-1 px-2">
-                    <KeyRound size={18} className="mr-1" /> Code Word
+                  <p>Create new words from the starting</p>
+                  <p>word to eventually turn it into today's </p>
+                  <p className="text-amber-500 mt-1 glow inline-flex items-center font-semibold">
+                    <Pyramid size={18} className="mr-1" /> Golden Word
+                  </p>
+                  {/* <p>one-by-one to turn it into today's codeword</p> */}
+                  {/* <span className="text-blue-500 mt-1 box-glow inline-flex items-center bg-blue-100 border-blue-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
+                    <KeyRound size={18} className="mr-1" /> {gameWords[1]}
+                  </span> */}
+                </div>
+                <div className="font-semibold tracking-widest flex flex-col items-center text-neutral-950 gap-2 mb-2">
+                  <span className="text-xl tracking-widest">
+                    {gameWords[0]}
+                  </span>
+                  <MoveDown />
+                  <span className="text-amber-500 mt-1 box-glow inline-flex items-center bg-amber-100 border-amber-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
+                    <Pyramid size={18} className="mr-1" /> {gameWords[1]}
                   </span>
                 </div>
-                <div className="grid grid-cols-3 place-items-center w-4/6 font-semibold tracking-widest">
-                  <p className="w-full text-right">{gameWords[0]}</p>
-                  <MoveRight />
-                  <span className="text-blue-500 glow">{gameWords[1]}</span>
-                </div>
                 <div>
-                  <p>Switching a letter must result in</p>
-                  <p>a new valid English word</p>
+                  <p>New words are created by changing </p>
+                  <p>
+                    <span className="font-bold text-neutral-950">one</span>{" "}
+                    letter of the current word
+                  </p>
+                  {/* <p>a new valid English word</p> */}
                 </div>
-                <div className="grid grid-cols-3 place-items-center w-4/6 font-semibold tracking-widest">
-                  <p className="w-full text-right">FIRE</p>
+                <div className="grid grid-cols-3 place-items-center text-neutral-950 w-4/6 font-semibold tracking-widest">
+                  <p className="w-full text-right">CAVE</p>
                   <MoveRight />
                   <p className="w-full text-left relative">
                     <span className="text-green-500">W</span>
-                    IRE
+                    AVE
                     <Check
                       className="absolute text-green-500 top-[3px] -right-3"
                       size={20}
                     />
                   </p>
-                  <p className="w-full text-right">FIRE</p>
+                  <p className="w-full text-right">CAVE</p>
                   <MoveRight />
                   <p className="w-full text-left relative">
                     <span className="text-rose-500">Q</span>
-                    IRE
+                    AVE
                     <X
                       className="absolute text-rose-500 top-[3px] -right-3"
                       size={20}
@@ -198,10 +214,16 @@ export default function App() {
                 </div>
                 <div>
                   <p>
-                    Can you get to the{" "}
-                    <span className="text-blue-500"> Code Word</span>
+                    Can you turn{" "}
+                    <span className="text-neutral-950 font-bold">
+                      {gameWords[0].toLowerCase()}
+                    </span>{" "}
+                    into{" "}
+                    <span className="font-bold text-amber-500">
+                      {gameWords[1].toLowerCase()}
+                    </span>{" "}
                   </p>
-                  <p>in under 10 switches?</p>
+                  <p>in under 10 transformations?</p>
                 </div>
               </div>
               <button
@@ -209,7 +231,9 @@ export default function App() {
                   setModal(false);
                   gameState === 0 && setGameState(1);
                 }}
-                className="bg-blue-500 box-glow py-3 cursor-pointer px-6 text-xl rounded-2xl text-white"
+                className={`${
+                  gameState === 0 ? "plausible-event-name=play" : ""
+                } bg-purple-400 border-2 border-purple-300 py-3 cursor-pointer px-6 text-xl rounded-2xl text-white`}
               >
                 {gameState === 0 ? "Play" : "Back"}
               </button>
@@ -218,8 +242,8 @@ export default function App() {
             <>
               {/* <img src="10switches.png" className="h-24 w-auto" /> */}
               <div className="flex-col flex w-full items-center gap-3">
-                <span className="text-xl font-semibold  inline-flex items-center">
-                  <LockKeyholeOpen size={20} className="mr-1" /> You Win!!!
+                <span className="text-2xl font-semibold text-amber-500 glow inline-flex items-center">
+                  <WandSparkles size={20} className="mr-1" /> You Win!!!
                   <ReactConfetti opacity={0.6} />
                 </span>
                 <img className="rounded-2xl" src="cat.gif" />
@@ -228,13 +252,13 @@ export default function App() {
                     <div
                       key={i}
                       className={`w-full h-full ${
-                        i < moves ? "bg-rose-500" : "bg-neutral-300"
+                        i < moves ? "bg-purple-400" : "bg-neutral-300"
                       }`}
                     ></div>
                   ))}
                 </div>
-                <p className="text-3xl text-green-500 font-semibold mt-2">
-                  {moves} {moves > 1 ? "Switches" : "Switch"}
+                <p className="text-3xl text-purple-500 font-semibold mt-2">
+                  {moves} {moves > 1 ? "Moves" : "Move"}
                 </p>
                 <div className="flex flex-row gap-2 mb-2 items-center justify-center">
                   <RWebShare
@@ -246,7 +270,7 @@ export default function App() {
                       text: `${winText}`,
                     }}
                   >
-                    <button className="cursor-pointer flex bg-blue-100 border-2 border-blue-200 text-blue-500 rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
+                    <button className="plausible-event-name=share cursor-pointer flex bg-purple-400 border-2 button-glow border-purple-300 text-white rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
                       <Link size={20} /> Share
                     </button>
                   </RWebShare>
@@ -269,7 +293,7 @@ export default function App() {
                   {Array.from({ length: 10 }, (_, i) => (
                     <div
                       key={i}
-                      className={`w-full h-full ${"bg-rose-500"}`}
+                      className={`w-full h-full ${"bg-purple-400"}`}
                     ></div>
                   ))}
                 </div>
@@ -283,7 +307,7 @@ export default function App() {
                       text: "I suck at 10switches",
                     }}
                   >
-                    <button className="cursor-pointer flex bg-blue-100 border-2 border-blue-200 text-blue-500 rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
+                    <button className="plausible-event-name=share cursor-pointer flex bg-purple-400 border-2 button-glow border-purple-300 text-white rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
                       <Link size={20} /> Share
                     </button>
                   </RWebShare>
@@ -299,7 +323,7 @@ export default function App() {
       </ReactModal>
       <div className="grid gap-1 grid-cols-10 h-2 w-full">
         {Array.from({ length: moves }, (_, i) => (
-          <div key={i} className="w-full h-full bg-rose-500"></div>
+          <div key={i} className="w-full h-full bg-purple-400"></div>
         ))}
       </div>
       <div className="py-10 h-full flex flex-col items-center justify-between">
@@ -315,8 +339,8 @@ export default function App() {
           >
             <Undo />
           </button>
-          <div className="select-none border-2 box-glow border-blue-200 bg-blue-100 rounded-3xl text-lg font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-blue-500 py-3 px-4">
-            <KeyRound size={20} />
+          <div className="select-none border-2 box-glow border-amber-200 bg-amber-100 rounded-3xl text-lg font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-amber-500 py-3 px-4">
+            <Pyramid size={20} />
             {gameWords[1]}
           </div>
           <button
