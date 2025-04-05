@@ -303,8 +303,8 @@ export default function App() {
                     disableNative={true}
                     data={{
                       url: url,
-                      title: "I suck at 10switches",
-                      text: "I suck at 10switches",
+                      title: "I suck at Alexic",
+                      text: "I suck at Alexic",
                     }}
                   >
                     <button className="plausible-event-name=share cursor-pointer flex bg-purple-400 border-2 button-glow border-purple-300 text-white rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">

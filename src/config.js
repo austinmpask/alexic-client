@@ -1,5 +1,5 @@
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-export const url = "https://10switches.com/";
+export const url = "https://alexic.io/";
 export const emojis = ["⬛", "🟪"];
 export const wordList = new Set([
   "ABET",
