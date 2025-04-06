@@ -59,7 +59,7 @@ export default function App() {
         }
       });
 
-      console.log(count);
+      // console.log(count);
 
       // Valid move, one letter changed
       if (count === 1) {
@@ -114,7 +114,7 @@ export default function App() {
       JSON.stringify(toCombo(usedWords[usedWords.length - 1]))
     ) {
       setCombo(toCombo(usedWords[usedWords.length - 1]));
-      console.log("reverted");
+      // console.log("reverted");
       return;
     }
     if (usedWords.length > 1) {
@@ -149,7 +149,7 @@ export default function App() {
   }, [moves]);
 
   useEffect(() => {
-    console.log(usedWords);
+    // console.log(usedWords);
   }, [usedWords]);
   return (
     <div className="pb-10 h-dvh w-dvw relative">
@@ -264,9 +264,7 @@ export default function App() {
                   <RWebShare
                     data={{
                       url: url,
-                      title: `Got it in ${moves} switch${
-                        moves > 1 ? "es" : ""
-                      }!`,
+                      title: `Got it in ${moves} move${moves > 1 ? "s" : ""}!`,
                       text: `${winText}`,
                     }}
                   >
@@ -321,7 +319,7 @@ export default function App() {
           )}
         </div>
       </ReactModal>
-      <div className="grid gap-1 grid-cols-10 h-2 w-full">
+      <div className="grid gap-1.5 grid-cols-10 h-2.5 w-full">
         {Array.from({ length: moves }, (_, i) => (
           <div key={i} className="w-full h-full bg-purple-400"></div>
         ))}

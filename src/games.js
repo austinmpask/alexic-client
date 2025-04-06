@@ -1,8 +1,9 @@
 export const games = {
-  "04032025": ["STAR", "MOON"],
-  "04042025": ["CAVE", "HILL"],
+  "04042025": ["CAVE", "HILL", "SAVE", "OAVE"],
   "04052025": ["HAND", "PALM", "BAND", "XAND"],
   "04062025": ["SHIP", "DOCK", "CHIP", "QHIP"],
-  "04072025": ["TREE", "LEAF"],
-  "04082025": ["WIND", "BLOW"],
+  "04072025": ["BEAR", "DUCK", "YEAR", "UEAR"],
+  "04082025": ["RAIN", "WIND", "GAIN", "UAIN"],
+  "04092025": ["ROCK", "WOOD", "MOCK", "EOCK"],
+  "04102025": ["LOCK", "GATE", "DOCK", "UOCK"],
 };
