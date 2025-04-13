@@ -8,4 +8,5 @@ export const games = {
   "04102025": ["LOCK", "GATE", "DOCK", "UOCK"],
   "04112025": ["TREE", "YARD", "FREE", "UREE"],
   "04122025": ["SHIP", "MIST", "CHIP", "QHIP"],
+  "04132025": ["WORD", "TYPE", "LORD", "QORD"],
 };
