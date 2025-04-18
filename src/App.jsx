@@ -5,13 +5,13 @@ import ReactConfetti from "react-confetti";
 import ReactModal from "react-modal";
 import { useEffect, useState } from "react";
 import { RWebShare } from "react-web-share";
-import { emojis, url } from "./config";
-import { games } from "./games";
-import { dateFormat, isValidWord, toCombo, toWord } from "./utils";
+import { api, emojis, url } from "./config";
+import { isValidWord, toCombo, toWord } from "./utils";
 
 import {
   Check,
   CircleHelp,
+  Flame,
   Link,
   MoveDown,
   MoveRight,
@@ -25,27 +25,71 @@ import {
 
 export default function App() {
   // Get todays puzzle
-
-  const gameWords = games[dateFormat(new Date())];
-  const target = gameWords[1];
+  const [wordList, setWordList] = useState(new Set());
+  // const gameWords = games[dateFormat(new Date())];
+  const [startWord, setStartWord] = useState("");
+  const [loaded, setLoaded] = useState(false);
+  const [target, setTarget] = useState("");
+  const [example, setExample] = useState("");
+  const [badExample, setBadExample] = useState("");
+  const [diff, setDiff] = useState("easy");
+  // const [color, setColor] = useState("green");
   const [moves, setMoves] = useState(0);
   const [modal, setModal] = useState(true);
   const [gameState, setGameState] = useState(0);
   const [canSubmit, setCanSubmit] = useState(false);
-  const [usedWords, setUsedWords] = useState([gameWords[0]]);
+  const [usedWords, setUsedWords] = useState([]);
   const [combo, setCombo] = useState([0, 0, 0, 0]);
   const [lastCombo, setLastCombo] = useState([0, 0, 0, 0]);
   const [winText, setWinText] = useState("");
 
   useEffect(() => {
+    async function getWords() {
+      const resp = await fetch(api + "words");
+
+      const wordJson = await resp.json();
+      setWordList(new Set(wordJson.words));
+    }
+    async function getPuzzle() {
+      const resp = await fetch(api + "puzzle");
+
+      const puzzle = await resp.json();
+      // setWordList(new Set(wordJson.words));
+      setTarget(puzzle.golden);
+      setUsedWords([puzzle.start]);
+      setStartWord(puzzle.start);
+      setExample(puzzle.example);
+      setBadExample(puzzle.incorrect);
+
+      switch (puzzle.difficulty) {
+        case "e":
+          setDiff("easy");
+          // setColor("green");
+          break;
+        case "m":
+          setDiff("medium");
+          // setColor("yellow");
+          break;
+        case "h":
+          setDiff("hard");
+          break;
+      }
+      setTimeout(() => {
+        setLoaded(true);
+      }, 600);
+    }
+    getWords();
+    getPuzzle();
+  }, []);
+  useEffect(() => {
     if (gameState === 1) {
-      setCombo(toCombo(gameWords[0]));
-      setLastCombo(toCombo(gameWords[0]));
+      setCombo(toCombo(startWord));
+      setLastCombo(toCombo(startWord));
     }
     if (gameState > 2) {
       setModal(true);
     }
-  }, [gameState, gameWords]);
+  }, [gameState, startWord]);
 
   useEffect(() => {
     // Check if the word is valid
@@ -86,7 +130,7 @@ export default function App() {
       }
     }
     if (
-      isValidWord(toWord(combo)) &&
+      isValidWord(toWord(combo), wordList) &&
       toWord(combo) != usedWords[usedWords.length - 1]
     ) {
       // Allow the player to commit that move and increment moves
@@ -158,85 +202,103 @@ export default function App() {
           {gameState < 2 ? (
             <>
               {/* <img src="10switches.svg" className="h-18 w-auto" /> */}
-              <p className="text-4xl text-purple-400 select-none font-semibold">
-                a<span className="text-purple-900">lex</span>ic
-              </p>
-              <div className="flex-col flex items-center gap-5 text-sm text-neutral-500">
-                <div>
-                  <p>Create new words from the starting</p>
-                  <p>word to eventually turn it into today's </p>
-                  <p className="text-amber-500 mt-1 glow inline-flex items-center font-semibold">
-                    <Pyramid size={18} className="mr-1" /> Golden Word
+
+              {loaded ? (
+                <>
+                  <p className="text-4xl text-purple-400 select-none font-semibold">
+                    a<span className="text-purple-900">lex</span>ic
                   </p>
-                  {/* <p>one-by-one to turn it into today's codeword</p> */}
-                  {/* <span className="text-blue-500 mt-1 box-glow inline-flex items-center bg-blue-100 border-blue-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
+                  <div className="flex-col flex items-center gap-5 text-sm text-neutral-500">
+                    <div>
+                      <p>Create new words from the starting</p>
+                      <p>word to eventually turn it into today's </p>
+                      <p className="text-amber-500 mt-1 glow inline-flex items-center font-semibold">
+                        <Pyramid size={18} className="mr-1" /> Golden Word
+                      </p>
+                      {/* <p>one-by-one to turn it into today's codeword</p> */}
+                      {/* <span className="text-blue-500 mt-1 box-glow inline-flex items-center bg-blue-100 border-blue-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
                     <KeyRound size={18} className="mr-1" /> {gameWords[1]}
                   </span> */}
-                </div>
-                <div className="font-semibold tracking-widest flex flex-col items-center text-lg text-neutral-950 gap-2 mb-2">
-                  <span className="text-lg tracking-widest">
-                    {gameWords[0]}
-                  </span>
-                  <MoveDown size={18} />
-                  <span className="text-amber-500 mt-1 box-glow inline-flex items-center bg-amber-100 border-amber-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
-                    <Pyramid size={18} className="mr-1" /> {gameWords[1]}
-                  </span>
-                </div>
-                <div>
-                  <p>New words are created by changing </p>
-                  <p>
-                    <span className="font-bold text-neutral-950">one</span>{" "}
-                    letter of the current word
+                    </div>
+                    <div className="font-semibold tracking-widest flex flex-col items-center text-lg text-neutral-950 gap-2 mb-2">
+                      <span className="text-lg tracking-widest">
+                        {startWord}
+                      </span>
+                      <MoveDown size={18} />
+                      <span className="text-amber-500 mt-1 box-glow inline-flex items-center bg-amber-100 border-amber-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
+                        <Pyramid size={18} className="mr-1" /> {target}
+                      </span>
+                    </div>
+                    <div>
+                      <p>New words are created by changing </p>
+                      <p>
+                        <span className="font-bold text-neutral-950">one</span>{" "}
+                        letter of the current word
+                      </p>
+                      {/* <p>a new valid English word</p> */}
+                    </div>
+                    <div className="grid grid-cols-3 place-items-center text-lg text-neutral-950 w-4/6 font-semibold tracking-widest">
+                      <p className="w-full text-right">{startWord}</p>
+                      <MoveRight />
+                      <p className="w-full text-left relative">
+                        <span className="text-green-500">{example[0]}</span>
+                        {example.substring(1)}
+                        <Check
+                          className="absolute text-green-500 top-[3px] -right-8"
+                          size={20}
+                        />
+                      </p>
+                      <p className="w-full text-right">{startWord}</p>
+                      <MoveRight />
+                      <p className="w-full text-left relative">
+                        <span className="text-rose-500">{badExample[0]}</span>
+                        {badExample.substring(1)}
+                        <X
+                          className="absolute text-rose-500 top-[3px] -right-8"
+                          size={20}
+                        />
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        Can you turn{" "}
+                        <span className="text-neutral-950 font-bold">
+                          {startWord.toLowerCase()}
+                        </span>{" "}
+                        into{" "}
+                        <span className="font-bold text-amber-500">
+                          {target.toLowerCase()}
+                        </span>{" "}
+                      </p>
+                      <p>in under 10 transformations?</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setModal(false);
+                      gameState === 0 && setGameState(1);
+                    }}
+                    className={`${
+                      gameState === 0 ? "plausible-event-name=play" : ""
+                    } bg-purple-400 border-2 border-purple-300 py-3 cursor-pointer px-6 text-xl rounded-2xl text-white`}
+                  >
+                    {gameState === 0 ? "Play" : "Back"}
+                  </button>
+                </>
+              ) : (
+                <div className="my-14 flex flex-col items-center justify-center">
+                  <Pyramid
+                    style={{
+                      animation: "wiggle 1.5s infinite ease",
+                    }}
+                    size={42}
+                    className="text-purple-300"
+                  />
+                  <p className="text-4xl text-purple-400 select-none font-semibold">
+                    a<span className="text-purple-900">lex</span>ic
                   </p>
-                  {/* <p>a new valid English word</p> */}
                 </div>
-                <div className="grid grid-cols-3 place-items-center text-lg text-neutral-950 w-4/6 font-semibold tracking-widest">
-                  <p className="w-full text-right">{gameWords[0]}</p>
-                  <MoveRight />
-                  <p className="w-full text-left relative">
-                    <span className="text-green-500">{gameWords[2][0]}</span>
-                    {gameWords[2].substring(1)}
-                    <Check
-                      className="absolute text-green-500 top-[3px] -right-8"
-                      size={20}
-                    />
-                  </p>
-                  <p className="w-full text-right">{gameWords[0]}</p>
-                  <MoveRight />
-                  <p className="w-full text-left relative">
-                    <span className="text-rose-500">{gameWords[3][0]}</span>
-                    {gameWords[3].substring(1)}
-                    <X
-                      className="absolute text-rose-500 top-[3px] -right-8"
-                      size={20}
-                    />
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    Can you turn{" "}
-                    <span className="text-neutral-950 font-bold">
-                      {gameWords[0].toLowerCase()}
-                    </span>{" "}
-                    into{" "}
-                    <span className="font-bold text-amber-500">
-                      {gameWords[1].toLowerCase()}
-                    </span>{" "}
-                  </p>
-                  <p>in under 10 transformations?</p>
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setModal(false);
-                  gameState === 0 && setGameState(1);
-                }}
-                className={`${
-                  gameState === 0 ? "plausible-event-name=play" : ""
-                } bg-purple-400 border-2 border-purple-300 py-3 cursor-pointer px-6 text-xl rounded-2xl text-white`}
-              >
-                {gameState === 0 ? "Play" : "Back"}
-              </button>
+              )}
             </>
           ) : gameState === 3 ? (
             <>
@@ -319,34 +381,61 @@ export default function App() {
           )}
         </div>
       </ReactModal>
-      <div className="grid gap-1.5 grid-cols-10 h-2.5 w-full">
-        {Array.from({ length: moves }, (_, i) => (
-          <div key={i} className="w-full h-full bg-purple-400"></div>
-        ))}
-      </div>
-      <div className="py-10 h-full flex flex-col items-center justify-between">
-        <div className="flex flex-row w-full justify-between px-5">
-          <button
-            className={`cursor-pointer px-4 ${
-              usedWords.length > 1 ||
-              toWord(combo) !== usedWords[usedWords.length - 1]
-                ? "text-neutral-950"
-                : "text-neutral-300"
-            }`}
-            onClick={handleUndo}
+
+      <div className="w-full flex flex-row">
+        <div
+          className={` text-sm px-2 py-1 text-purple-400 bg-purple-100 rounded-r-full flex-row flex justify-center w-fit items-center`}
+        >
+          <Flame size={14} />
+          <span>{diff}</span>
+        </div>
+        {/* <div className="rounded-l-full w-full bg-purple-100 border-2 border-purple-200 p-1">
+          <div
+            className={`bg-purple-400 transition-all ${
+              "w-" + moves + "/10"
+            } text-white text-sm h-full rounded-full text-right px-2flex flex-row justify-end items-center`}
           >
-            <Undo />
-          </button>
-          <div className="select-none border-2 box-glow border-amber-200 bg-amber-100 rounded-3xl text-lg font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-amber-500 py-3 px-4">
-            <Pyramid size={20} />
-            {gameWords[1]}
+            <span>{moves}</span>
           </div>
-          <button
-            onClick={() => setModal(true)}
-            className="px-4 cursor-pointer"
-          >
-            <CircleHelp />
-          </button>
+        </div> */}
+        <div className="grid gap-1.5 grid-cols-10 w-full items-center px-3">
+          {Array.from({ length: 10 }, (_, i) => (
+            <div
+              key={i}
+              className={`w-4.5 h-4.5 rounded-full border-2 ${
+                i < moves
+                  ? "bg-purple-400 border-purple-300"
+                  : "bg-purple-100 border-purple-50"
+              }`}
+            ></div>
+          ))}
+        </div>
+      </div>
+      <div className="py-10 h-full flex flex-col w-full items-center justify-between">
+        <div className="w-full flex-col flex items-center gap-2">
+          <div className="flex flex-row w-full justify-between px-5">
+            <button
+              className={`cursor-pointer px-4 ${
+                usedWords.length > 1 ||
+                toWord(combo) !== usedWords[usedWords.length - 1]
+                  ? "text-neutral-950"
+                  : "text-neutral-300"
+              }`}
+              onClick={handleUndo}
+            >
+              <Undo />
+            </button>
+            <div className="select-none border-2 box-glow border-amber-200 bg-amber-100 rounded-3xl text-lg font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-amber-500 py-3 px-4">
+              <Pyramid size={20} />
+              {target}
+            </div>
+            <button
+              onClick={() => setModal(true)}
+              className="px-4 cursor-pointer"
+            >
+              <CircleHelp />
+            </button>
+          </div>
         </div>
         <div className="h-[200px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
           <div className="grid grid-cols-4 h-full w-full sm:w-1/2 relative z-0">

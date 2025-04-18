@@ -1,4 +1,4 @@
-import { alphabet, wordList } from "./config";
+import { alphabet } from "./config";
 
 export function toWord(combo) {
   let word = "";
@@ -18,7 +18,7 @@ export function toCombo(word) {
   return c;
 }
 
-export function isValidWord(word) {
+export function isValidWord(word, wordList) {
   return wordList.has(word.toUpperCase());
 }
 
