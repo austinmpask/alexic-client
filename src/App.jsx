@@ -140,33 +140,35 @@ export default function App() {
         {/* Display either the welcome content or win content depending on game state */}
         {gameState.stage < 2 ? <TutorialModalContent /> : <EndModalContent />}
       </ModalFrame>
-      <div className="h-dvh w-dvw relative flex flex-col justify-between items-center pb-12">
-        <div className="w-full flex flex-col gap-4">
-          <TopBar />
-          <GameHeader />
-        </div>
-        <div className="w-full">
-          <div className="h-[200px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
-            <div className="grid grid-cols-4 h-full w-full sm:w-1/2 relative z-0">
-              <LetterSwipe i={0} val={gameState.combo} />
-              <LetterSwipe i={1} val={gameState.combo} />
-              <LetterSwipe i={2} val={gameState.combo} />
-              <LetterSwipe i={3} val={gameState.combo} />
-            </div>
-            {!gameState.isModalOpen && (
-              <>
-                <div className="overlay-top"></div>
-                <div className="overlay-bottom"></div>
-              </>
-            )}
+      {gameState.stage > 0 && (
+        <div className="h-dvh w-dvw relative flex flex-col justify-between items-center pb-12">
+          <div className="w-full flex flex-col gap-4">
+            <TopBar />
+            <GameHeader />
           </div>
+          <div className="w-full">
+            <div className="h-[200px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
+              <div className="grid grid-cols-4 h-full w-full sm:w-1/2 relative z-0">
+                <LetterSwipe i={0} val={gameState.combo} />
+                <LetterSwipe i={1} val={gameState.combo} />
+                <LetterSwipe i={2} val={gameState.combo} />
+                <LetterSwipe i={3} val={gameState.combo} />
+              </div>
+              {!gameState.isModalOpen && (
+                <>
+                  <div className="overlay-top"></div>
+                  <div className="overlay-bottom"></div>
+                </>
+              )}
+            </div>
+          </div>
+          <CoolButton
+            disabled={!canSubmit}
+            last={gameState.usedWords[gameState.usedWords.length - 1]}
+            onClick={handleCommit}
+          />
         </div>
-        <CoolButton
-          disabled={!canSubmit}
-          last={gameState.usedWords[gameState.usedWords.length - 1]}
-          onClick={handleCommit}
-        />
-      </div>
+      )}
     </>
   );
 }
