@@ -2,7 +2,7 @@ import Loader from "./Loader";
 
 // import ReactModal from "react-modal";
 import Logo from "./Logo";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { GameStateContext } from "../GameState";
 
 // Modal which displays either a loading thing or some child content
@@ -12,6 +12,20 @@ export default function ModalFrame({
   footer,
 }) {
   const { gameState, setGameState } = useContext(GameStateContext);
+
+  useEffect(() => {
+    const setViewportHeight = () => {
+      document.documentElement.style.setProperty(
+        "--vh",
+        `${window.innerHeight * 0.01}px`
+      );
+    };
+
+    setViewportHeight();
+
+    window.addEventListener("resize", setViewportHeight);
+    return () => window.removeEventListener("resize", setViewportHeight);
+  }, []);
   return (
     gameState.isModalOpen && (
       <div

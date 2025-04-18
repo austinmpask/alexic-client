@@ -12,10 +12,11 @@
 }
 
 .welcome-modal {
-  /* width: 100dvw;
-  height: 100dvh;
+  width: 100dvw;
+  /* height: 100dvh;
   max-width: 100dvw;
   max-height: 100dvh; */
+  height: calc(var(--vh, 1vh) * 100);
   inset: 0;
   position: fixed;
   z-index: 100;
