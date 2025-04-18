@@ -14,6 +14,8 @@
 .welcome-modal {
   width: 100dvw;
   height: 100dvh;
+  position: fixed;
+  z-index: 100;
   outline: none;
   display: flex;
   flex-direction: column;
