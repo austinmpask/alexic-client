@@ -198,7 +198,7 @@ export default function App() {
   return (
     <div className="pb-10 h-dvh w-dvw relative">
       <ReactModal isOpen={modal} className={"welcome-modal"}>
-        <div className="shadow flex flex-col items-center justify-center alc-modal gap-6 border-neutral-50 border-2 max-h-[90%] w-[90%] sm:w-1/2 text-center text-neutral-950 text-lg rounded-4xl bg-white py-5 px-5">
+        <div className="shadow flex flex-col items-center justify-center alc-modal gap-6 border-neutral-50 border-2 h-[90%] w-[90%] sm:w-1/2 text-center text-neutral-950 text-lg rounded-4xl bg-white py-5 px-5">
           {gameState < 2 ? (
             <>
               {/* <img src="10switches.svg" className="h-18 w-auto" /> */}
