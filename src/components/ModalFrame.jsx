@@ -14,18 +14,25 @@ export default function ModalFrame({
   const { gameState, setGameState } = useContext(GameStateContext);
 
   useEffect(() => {
-    const setViewportHeight = () => {
-      document.documentElement.style.setProperty(
-        "--vh",
-        `${window.innerHeight * 0.01}px`
-      );
+    // Function to manually adjust the modal height to actual viewport height
+    const adjustModalHeight = () => {
+      const modal = document.querySelector(".welcome-modal");
+      if (modal) {
+        modal.style.height = `${window.innerHeight}px`;
+      }
     };
 
-    setViewportHeight();
+    // Recalculate height after modal opens
+    if (gameState.isModalOpen) {
+      adjustModalHeight();
+    }
 
-    window.addEventListener("resize", setViewportHeight);
-    return () => window.removeEventListener("resize", setViewportHeight);
-  }, []);
+    // Event listener to handle changes in viewport height (resize)
+    window.addEventListener("resize", adjustModalHeight);
+
+    // Clean up listener on unmount
+    return () => window.removeEventListener("resize", adjustModalHeight);
+  }, [gameState.isModalOpen]);
   return (
     gameState.isModalOpen && (
       <div
