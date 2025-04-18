@@ -13,8 +13,8 @@
 
 .welcome-modal {
   width: 100dvw;
-  /* height: 100dvh;
-  max-width: 100dvw;
+  height: 100vh;
+  /* max-width: 100dvw;
   max-height: 100dvh; */
   /* height: calc(var(--vh, 1vh) * 100); */
   inset: 0;
@@ -26,7 +26,6 @@
   align-items: center;
   padding: 3em 0;
   background-color: #ffffff;
-  /* backdrop-filter: blur(2px); */
 }
 
 .glow {
