@@ -13,26 +13,26 @@ export default function ModalFrame({
 }) {
   const { gameState, setGameState } = useContext(GameStateContext);
 
-  useEffect(() => {
-    // Function to manually adjust the modal height to actual viewport height
-    const adjustModalHeight = () => {
-      const modal = document.querySelector(".welcome-modal");
-      if (modal) {
-        modal.style.height = `${window.innerHeight}px`;
-      }
-    };
+  // useEffect(() => {
+  //   // Function to manually adjust the modal height to actual viewport height
+  //   const adjustModalHeight = () => {
+  //     const modal = document.querySelector(".welcome-modal");
+  //     if (modal) {
+  //       modal.style.height = `${window.innerHeight}px`;
+  //     }
+  //   };
 
-    // Recalculate height after modal opens
-    if (gameState.isModalOpen) {
-      adjustModalHeight();
-    }
+  //   // Recalculate height after modal opens
+  //   if (gameState.isModalOpen) {
+  //     adjustModalHeight();
+  //   }
 
-    // Event listener to handle changes in viewport height (resize)
-    window.addEventListener("resize", adjustModalHeight);
+  //   // Event listener to handle changes in viewport height (resize)
+  //   window.addEventListener("resize", adjustModalHeight);
 
-    // Clean up listener on unmount
-    return () => window.removeEventListener("resize", adjustModalHeight);
-  }, [gameState.isModalOpen]);
+  //   // Clean up listener on unmount
+  //   return () => window.removeEventListener("resize", adjustModalHeight);
+  // }, [gameState.isModalOpen]);
   return (
     gameState.isModalOpen && (
       <div

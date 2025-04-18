@@ -13,7 +13,7 @@
 
 .welcome-modal {
   width: 100dvw;
-  height: 100vh;
+  height: 100dvh;
   /* max-width: 100dvw;
   max-height: 100dvh; */
   /* height: calc(var(--vh, 1vh) * 100); */
