@@ -1,14 +1,15 @@
 import "swiper/css";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { alphabet } from "./config";
+import { GameStateContext } from "./GameState";
 
-export default function LetterSwipe({ i, val, setVal }) {
+export default function LetterSwipe({ i, val }) {
   const swiperRef = useRef(null);
   const prevVal = useRef(val[i]);
   const slideIndex = val[i] === 0 ? 25 : val[i] - 1;
-
+  const { setGameState } = useContext(GameStateContext);
   // Only update when val[i] changes from outside
   useEffect(() => {
     if (swiperRef.current && prevVal.current !== val[i]) {
@@ -24,9 +25,10 @@ export default function LetterSwipe({ i, val, setVal }) {
     if (prevVal.current === val[i]) {
       const newVal = swiper.realIndex === 25 ? 0 : swiper.realIndex + 1;
       if (newVal !== val[i]) {
-        setVal((old) =>
-          old.map((item, index) => (index === i ? newVal : item))
-        );
+        setGameState((old) => ({
+          ...old,
+          combo: old.combo.map((item, index) => (index === i ? newVal : item)),
+        }));
         prevVal.current = newVal;
       }
     }

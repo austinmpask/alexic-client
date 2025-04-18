@@ -1,6 +1,7 @@
 import { alphabet } from "./config";
 
 export function toWord(combo) {
+  console.log(combo);
   let word = "";
   combo.forEach((num) => {
     word += alphabet[num];
