@@ -1,31 +1,14 @@
 import "swiper/css";
 import CoolButton from "./CoolButton";
-import LetterSwipe from "./LetterSwipe";
-import ReactConfetti from "react-confetti";
-import ReactModal from "react-modal";
-import { useContext, useEffect, useState } from "react";
-import { RWebShare } from "react-web-share";
-import { api, emojis, url } from "./config";
-import { isValidWord, toCombo, toWord } from "./utils";
-
-import {
-  Check,
-  CircleHelp,
-  Flame,
-  Link,
-  MoveDown,
-  MoveRight,
-  Pyramid,
-  Undo,
-  WandSparkles,
-  X,
-} from "lucide-react";
-import ModalFrame from "./components/ModalFrame";
-import TutorialModalContent from "./components/TutorialModalContent";
-import { GameStateContext } from "./GameState";
-import TopBar from "./components/TopBar";
-import GameHeader from "./components/GameHeader";
 import EndModalContent from "./components/EndModalContent";
+import GameHeader from "./components/GameHeader";
+import LetterSwipe from "./LetterSwipe";
+import ModalFrame from "./components/ModalFrame";
+import TopBar from "./components/TopBar";
+import TutorialModalContent from "./components/TutorialModalContent";
+import { useContext, useEffect, useState } from "react";
+import { GameStateContext } from "./GameState";
+import { isValidWord, toCombo, toWord } from "./utils";
 
 // Import Swiper styles
 
@@ -149,10 +132,10 @@ export default function App() {
           <div className="w-full">
             <div className="h-[200px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
               <div className="grid grid-cols-4 h-full w-full sm:w-1/2 relative z-0">
-                <LetterSwipe i={0} val={gameState.combo} />
-                <LetterSwipe i={1} val={gameState.combo} />
-                <LetterSwipe i={2} val={gameState.combo} />
-                <LetterSwipe i={3} val={gameState.combo} />
+                <LetterSwipe i={0} />
+                <LetterSwipe i={1} />
+                <LetterSwipe i={2} />
+                <LetterSwipe i={3} />
               </div>
               {!gameState.isModalOpen && (
                 <>

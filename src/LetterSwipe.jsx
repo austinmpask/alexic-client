@@ -2,29 +2,32 @@ import "swiper/css";
 import { useContext, useEffect, useRef } from "react";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { alphabet } from "./config";
 import { GameStateContext } from "./GameState";
+import { alphabet } from "./config";
 
-export default function LetterSwipe({ i, val }) {
+export default function LetterSwipe({ i }) {
+  const { gameState, setGameState } = useContext(GameStateContext);
   const swiperRef = useRef(null);
-  const prevVal = useRef(val[i]);
-  const slideIndex = val[i] === 0 ? 25 : val[i] - 1;
-  const { setGameState } = useContext(GameStateContext);
+  const prevVal = useRef(gameState.combo[i]);
+  const slideIndex = gameState.combo[i] === 0 ? 25 : gameState.combo[i] - 1;
   // Only update when val[i] changes from outside
   useEffect(() => {
-    if (swiperRef.current && prevVal.current !== val[i]) {
+    if (swiperRef.current && prevVal.current !== gameState.combo[i]) {
       // Update without triggering events
-      console.log(val);
-      swiperRef.current.slideTo(val[i] + 3 === 0 ? 25 : val[i] + 2, 450);
-      prevVal.current = val[i];
+      console.log(gameState.combo);
+      swiperRef.current.slideTo(
+        gameState.combo[i] + 3 === 0 ? 25 : gameState.combo[i] + 2,
+        450
+      );
+      prevVal.current = gameState.combo[i];
     }
-  }, [val, i, slideIndex]);
+  }, [gameState.combo, i, slideIndex]);
 
   const handleSlideChange = (swiper) => {
     // Only update if the change is from user interaction
-    if (prevVal.current === val[i]) {
+    if (prevVal.current === gameState.combo[i]) {
       const newVal = swiper.realIndex === 25 ? 0 : swiper.realIndex + 1;
-      if (newVal !== val[i]) {
+      if (newVal !== gameState.combo[i]) {
         setGameState((old) => ({
           ...old,
           combo: old.combo.map((item, index) => (index === i ? newVal : item)),
