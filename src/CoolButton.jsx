@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { GameStateContext } from "./GameState";
 import { toWord } from "./utils";
 
-export default function CoolButton({ last, onClick, disabled }) {
+export default function CoolButton({ last, onClick, disabled, combo }) {
   const { gameState } = useContext(GameStateContext);
   return (
     <button
@@ -17,7 +17,7 @@ export default function CoolButton({ last, onClick, disabled }) {
     >
       {disabled ? <WandSparkles size={17} /> : <WandSparkles size={17} />}
       <span className="text-lg tracking-widest">
-        {disabled ? last : toWord(gameState.combo)}
+        {disabled ? last : toWord(combo)}
       </span>
       <div
         className={`absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] ${

@@ -15,13 +15,23 @@ import { isValidWord, toCombo, toWord } from "./utils";
 export default function App() {
   const { gameState, gameInfo, setGameState } = useContext(GameStateContext);
   const [canSubmit, setCanSubmit] = useState(false);
+  // Store swiper indexes separately to avoid glitches with sliders
+  const [s0, sS0] = useState(0);
+  const [s1, sS1] = useState(0);
+  const [s2, sS2] = useState(0);
+  const [s3, sS3] = useState(0);
+  const [lastTouched, setLastTouched] = useState(null);
 
   // Once the modal is initially closed, initiate the game
   useEffect(() => {
     if (gameState.stage === 1) {
+      sS0(toCombo(gameInfo.startWord)[0]);
+      sS1(toCombo(gameInfo.startWord)[1]);
+      sS2(toCombo(gameInfo.startWord)[2]);
+      sS3(toCombo(gameInfo.startWord)[3]);
       setGameState((p) => ({
         ...p,
-        combo: toCombo(gameInfo.startWord),
+        // combo: toCombo(gameInfo.startWord),
         lastCombo: toCombo(gameInfo.startWord),
       }));
     }
@@ -32,16 +42,16 @@ export default function App() {
 
   // Validate the move when a letter is switched
   useEffect(() => {
-    console.log(gameInfo);
+    // console.log(gameInfo);
     // Check if the word is valid
+    const combo = [s0, s1, s2, s3];
     if (
       gameState.stage === 1 &&
-      gameState.combo !==
-        toCombo(gameState.usedWords[gameState.usedWords.length - 1])
+      combo !== toCombo(gameState.usedWords[gameState.usedWords.length - 1])
     ) {
       // Check how many differences there are
       let count = 0;
-      gameState.combo.forEach((letter, i) => {
+      combo.forEach((letter, i) => {
         if (
           letter !==
           toCombo(gameState.usedWords[gameState.usedWords.length - 1])[i]
@@ -55,13 +65,13 @@ export default function App() {
       // Valid move, one letter changed
       if (count === 1) {
         setGameState((p) => {
-          const lc = [...gameState.combo];
+          const lc = [...combo];
           return { ...p, lastCombo: lc };
         });
       } else if (count > 1) {
         // Figure out the most recently changed index
         let index = 0;
-        gameState.combo.forEach((letter, i) => {
+        combo.forEach((letter, i) => {
           if (letter !== gameState.lastCombo[i]) {
             index = i;
           }
@@ -82,9 +92,8 @@ export default function App() {
       }
     }
     if (
-      isValidWord(toWord(gameState.combo), gameInfo.wordList) &&
-      toWord(gameState.combo) !=
-        gameState.usedWords[gameState.usedWords.length - 1]
+      isValidWord(toWord([s0, s1, s2, s3]), gameInfo.wordList) &&
+      toWord(combo) != gameState.usedWords[gameState.usedWords.length - 1]
     ) {
       // Allow the player to commit that move and increment moves
       setCanSubmit(true);
@@ -92,14 +101,15 @@ export default function App() {
       setCanSubmit(false);
     }
     // Check if they got the target word
-  }, [gameState.combo, gameState.usedWords]);
+  }, [s0, s1, s2, s3, gameState.usedWords]);
 
   // Increment the players moves and update last saved word when they commit a turn
   function handleCommit() {
+    const combo = [s0, s1, s2, s3];
     setGameState((p) => {
       // Add new word to used words
       const w = [...p.usedWords];
-      w.push(toWord(gameState.combo));
+      w.push(toWord(combo));
 
       // Increment moves and insert new used words
       return { ...p, moves: p.moves + 1, usedWords: w };
@@ -110,7 +120,7 @@ export default function App() {
 
   // Check for win or loss
   useEffect(() => {
-    if (toWord(gameState.combo) === gameInfo.goldenWord) {
+    if (toWord([s0, s1, s2, s3]) === gameInfo.goldenWord) {
       setGameState((p) => ({ ...p, stage: 3 }));
     } else if (gameState.moves >= 10) {
       setGameState((p) => ({ ...p, stage: 4 }));
@@ -127,15 +137,56 @@ export default function App() {
         <div className="h-dvh w-dvw relative flex flex-col justify-between items-center pb-12">
           <div className="w-full flex flex-col gap-4">
             <TopBar />
-            <GameHeader />
+            <GameHeader
+              s0={s0}
+              s1={s1}
+              s2={s2}
+              s3={s3}
+              sS0={sS0}
+              sS1={sS1}
+              sS2={sS2}
+              sS3={sS3}
+              setLastTouched={setLastTouched}
+            />
           </div>
           <div className="w-full">
             <div className="h-[200px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
               <div className="grid grid-cols-4 h-full w-full sm:w-1/2 relative z-0">
-                <LetterSwipe i={0} />
-                <LetterSwipe i={1} />
+                <LetterSwipe
+                  i={0}
+                  val={s0}
+                  setVal={sS0}
+                  combo={[s0, s1, s2, s3]}
+                  lastTouched={lastTouched}
+                  setLastTouched={setLastTouched}
+                />
+                <LetterSwipe
+                  i={1}
+                  val={s1}
+                  setVal={sS1}
+                  combo={[s0, s1, s2, s3]}
+                  lastTouched={lastTouched}
+                  setLastTouched={setLastTouched}
+                />
+                <LetterSwipe
+                  i={2}
+                  val={s2}
+                  setVal={sS2}
+                  combo={[s0, s1, s2, s3]}
+                  lastTouched={lastTouched}
+                  setLastTouched={setLastTouched}
+                />
+                <LetterSwipe
+                  i={3}
+                  val={s3}
+                  setVal={sS3}
+                  combo={[s0, s1, s2, s3]}
+                  lastTouched={lastTouched}
+                  setLastTouched={setLastTouched}
+                />
+                {/* <LetterSwipe i={1} />
                 <LetterSwipe i={2} />
-                <LetterSwipe i={3} />
+                <LetterSwipe i={3} /> */}
               </div>
               {!gameState.isModalOpen && (
                 <>
@@ -149,6 +200,7 @@ export default function App() {
             disabled={!canSubmit}
             last={gameState.usedWords[gameState.usedWords.length - 1]}
             onClick={handleCommit}
+            combo={[s0, s1, s2, s3]}
           />
         </div>
       )}

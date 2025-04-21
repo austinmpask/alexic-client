@@ -7,7 +7,7 @@ export default function GameStateProvider({ children }) {
   const [gameState, setGameState] = useState({
     stage: 0,
     moves: 0,
-    combo: [0, 0, 0, 0],
+    // combo: [0, 0, 0, 0],
     lastCombo: [0, 0, 0, 0],
     usedWords: [],
     isLoading: true,

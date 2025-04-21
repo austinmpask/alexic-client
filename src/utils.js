@@ -1,7 +1,7 @@
 import { alphabet } from "./config";
 
 export function toWord(combo) {
-  console.log(combo);
+  // console.log(combo);
   let word = "";
   combo.forEach((num) => {
     word += alphabet[num];
@@ -33,4 +33,13 @@ export function dateFormat(date) {
 
   // Combine in MMDDYYYY format
   return month + day + year;
+}
+
+// Convert raw index to an n-1 index for the slider
+export function toSliderIndex(i) {
+  return i === 0 ? 25 : i - 1;
+}
+// Reverse of above
+export function toRawIndex(i) {
+  return i === 25 ? 0 : i + 1;
 }
