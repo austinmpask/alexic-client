@@ -12,7 +12,7 @@ export default function Loader() {
         className="text-purple-300"
       />
       <Logo />
-      <p className="text-neutral-400">Bug fixes coming, sorry!</p>
+      {/* <p className="text-neutral-400">Bug fixes coming, sorry!</p> */}
     </div>
   );
 }
