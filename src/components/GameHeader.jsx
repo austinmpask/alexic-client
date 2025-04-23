@@ -72,7 +72,7 @@ export default function GameHeader({
   }
   return (
     <div className="w-full flex-col flex items-center gap-2">
-      <div className="flex flex-row w-full justify-between px-5">
+      <div className="grid grid-cols-3 place-items-center w-full">
         <button
           className={`cursor-pointer px-4 ${
             gameState.usedWords.length > 1 ||
