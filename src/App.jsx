@@ -139,7 +139,7 @@ export default function App() {
       </ModalFrame>
       {gameState.stage > 0 && (
         <div className="h-dvh w-dvw relative flex flex-col justify-between items-center pb-12">
-          <div className="w-full flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-6">
             <TopBar />
             <GameHeader
               s0={s0}

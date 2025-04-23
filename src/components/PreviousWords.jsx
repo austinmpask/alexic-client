@@ -14,7 +14,7 @@ export default function PreviousWords() {
           animate={{ translateY: 0, opacity: 1 }}
           exit={{ translateY: 30, opacity: 0 }}
           transition={modalTransition}
-          className="gap-2 absolute z-10 shadow flex flex-col items-center rounded-3xl w-8/10 h-fit p-4 text-purple-700 bg-purple-100 border-2 border-purple-200 bottom-20"
+          className="gap-2 absolute z-10 shadow flex flex-col items-center rounded-3xl w-8/10 h-fit p-4 text-purple-700 bg-purple-100 border-2 border-purple-100 bottom-20"
         >
           <p className="text-purple-400 text-lg mb-3">History</p>
           {gameState.usedWords.map((w, i) => (
