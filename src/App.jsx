@@ -9,6 +9,10 @@ import TutorialModalContent from "./components/TutorialModalContent";
 import { useContext, useEffect, useState } from "react";
 import { GameStateContext } from "./GameState";
 import { isValidWord, toCombo, toWord } from "./utils";
+import PreviousWords from "./components/PreviousWords";
+import { BookText, Undo, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { modalTransition } from "./config";
 
 // Import Swiper styles
 
@@ -112,7 +116,7 @@ export default function App() {
       w.push(toWord(combo));
 
       // Increment moves and insert new used words
-      return { ...p, moves: p.moves + 1, usedWords: w };
+      return { ...p, moves: p.moves + 1, usedWords: w, isHistoryOpen: false };
     });
 
     setCanSubmit(false);
@@ -196,12 +200,51 @@ export default function App() {
               )}
             </div>
           </div>
-          <CoolButton
-            disabled={!canSubmit}
-            last={gameState.usedWords[gameState.usedWords.length - 1]}
-            onClick={handleCommit}
-            combo={[s0, s1, s2, s3]}
-          />
+          <div className="relative grid grid-cols-3 place-items-center w-full">
+            <div></div>
+            <CoolButton
+              disabled={!canSubmit}
+              last={gameState.usedWords[gameState.usedWords.length - 1]}
+              onClick={handleCommit}
+              combo={[s0, s1, s2, s3]}
+            />
+            <button
+              className={`cursor-pointer px-4 ${
+                gameState.isHistoryOpen ? "text-purple-400" : "text-purple-300"
+              }`}
+              onClick={() =>
+                setGameState((p) => ({
+                  ...p,
+                  isHistoryOpen: !p.isHistoryOpen,
+                }))
+              }
+            >
+              <AnimatePresence>
+                {gameState.isHistoryOpen ? (
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    // transition={modalTransition}
+                    className="bg-purple-100 p-3 rounded-full"
+                  >
+                    <X />
+                  </motion.div>
+                ) : (
+                  <div
+                    // initial={{ translateY: 30, opacity: 0 }}
+                    // animate={{ translateY: 0, opacity: 0 }}
+                    // exit={{ translateY: 30, opacity: 0 }}
+                    // transition={modalTransition}
+                    className="p-3 rounded-full"
+                  >
+                    <BookText />
+                  </div>
+                )}
+              </AnimatePresence>
+            </button>
+            <PreviousWords />
+          </div>
         </div>
       )}
     </>

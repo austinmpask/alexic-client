@@ -16,7 +16,7 @@ export default function LetterSwipe({
   // Ref for this slider instance
   const swiperRef = useRef(null);
 
-  const { gameState } = useContext(GameStateContext);
+  const { gameState, setGameState } = useContext(GameStateContext);
 
   // Convert the raw index to the adjusted slider display index
   const slideIndex = toSliderIndex(val);
@@ -26,6 +26,11 @@ export default function LetterSwipe({
       const w = toCombo(gameState.usedWords[gameState.usedWords.length - 1])[i];
       swiperRef.current.slideTo(w + 3 === 0 ? 25 : w + 2, 450);
     }
+    gameState.isHistoryOpen &&
+      setGameState((p) => ({
+        ...p,
+        isHistoryOpen: false,
+      }));
   }, [lastTouched, val, gameState.usedWords]);
 
   const handleSlideChange = (swiper) => {

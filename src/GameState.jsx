@@ -12,6 +12,7 @@ export default function GameStateProvider({ children }) {
     usedWords: [],
     isLoading: true,
     isModalOpen: true,
+    isHistoryOpen: false,
   });
   const [gameInfo, setGameInfo] = useState({
     wordList: new Set([]),

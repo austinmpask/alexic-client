@@ -90,7 +90,13 @@ export default function GameHeader({
           {gameInfo.goldenWord}
         </div>
         <button
-          onClick={() => setGameState((p) => ({ ...p, isModalOpen: true }))}
+          onClick={() =>
+            setGameState((p) => ({
+              ...p,
+              isModalOpen: true,
+              isHistoryOpen: false,
+            }))
+          }
           className="px-4 cursor-pointer"
         >
           <CircleHelp />
