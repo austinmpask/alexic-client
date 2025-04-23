@@ -1,27 +1,11 @@
 import { createContext, useEffect, useState } from "react";
 import { api } from "./config";
+import { useGame } from "./Alexic";
 
 export const GameStateContext = createContext();
 
 export default function GameStateProvider({ children }) {
-  const [gameState, setGameState] = useState({
-    stage: 0,
-    moves: 0,
-    // combo: [0, 0, 0, 0],
-    lastCombo: [0, 0, 0, 0],
-    usedWords: [],
-    isLoading: true,
-    isModalOpen: true,
-    isHistoryOpen: false,
-  });
-  const [gameInfo, setGameInfo] = useState({
-    wordList: new Set([]),
-    startWord: "",
-    goldenWord: "",
-    example: "",
-    badExample: "",
-    difficulty: "",
-  });
+  const game = useGame();
 
   //   Get todays puzzle info
   useEffect(() => {
@@ -32,44 +16,21 @@ export default function GameStateProvider({ children }) {
       const wordJson = await wordResp.json();
       const puzzleJson = await puzzleResp.json();
 
-      let diffString = "";
-      switch (puzzleJson.difficulty) {
-        case "e":
-          diffString = "easy";
-          break;
-        case "m":
-          diffString = "medium";
-          break;
-        case "h":
-          diffString = "hard";
-          break;
-      }
-
-      setGameInfo((p) => ({
-        ...p,
-        wordList: new Set(wordJson.words),
-        startWord: puzzleJson.start,
-        goldenWord: puzzleJson.golden,
-        example: puzzleJson.example,
-        badExample: puzzleJson.incorrect,
-        difficulty: diffString,
-      }));
-      setGameState((p) => ({ ...p, usedWords: [puzzleJson.start] }));
+      // Initialize game with the stuff from API
+      game.init(
+        puzzleJson.start,
+        puzzleJson.golden,
+        puzzleJson.example,
+        puzzleJson.incorrect,
+        puzzleJson.difficulty,
+        wordJson.words
+      );
     }
     getPuzzle();
   }, []);
 
-  //   Mark as loaded once game info has been populated
-  useEffect(() => {
-    // console.log(gameInfo);
-    gameInfo.startWord !== "" &&
-      setTimeout(() => {
-        setGameState((p) => ({ ...p, isLoading: false }));
-      }, 500);
-  }, [gameInfo]);
-
   return (
-    <GameStateContext.Provider value={{ gameState, gameInfo, setGameState }}>
+    <GameStateContext.Provider value={game}>
       {children}
     </GameStateContext.Provider>
   );

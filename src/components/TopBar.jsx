@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { GameStateContext } from "../GameState";
 
 export default function TopBar() {
+  const game = useContext(GameStateContext);
   const widths = [
     "w-0/10",
     "w-1/10",
@@ -16,27 +17,26 @@ export default function TopBar() {
     "w-9/10",
     "w-10/10",
   ];
-  const { gameState, gameInfo } = useContext(GameStateContext);
   return (
     <div className="w-full flex flex-row">
       <div
         className={` text-sm px-2 py-1 text-purple-500 bg-purple-200 rounded-r-full flex-row flex justify-center w-fit items-center relative`}
       >
         <Flame size={16} />
-        <span>{gameInfo.difficulty}</span>
+        <span>{game.difficulty}</span>
       </div>
 
       <div className="grid grid-cols-10 h-full w-full items-center place-items-center mx-3 relative">
         <div
           className={`absolute left-0 spring rounded-r-full ${
-            widths[gameState.moves]
+            widths[game.moves]
           } ${
-            gameState.moves ? "opacity-100" : "opacity-50"
+            game.moves ? "opacity-100" : "opacity-50"
           } h-full bg-purple-100 -z-1`}
         ></div>
         <div
           className={`absolute -left-8 rounded-full spring ${
-            gameState.moves ? "opacity-100 w-12" : "opacity-50 w-0"
+            game.moves ? "opacity-100 w-12" : "opacity-50 w-0"
           }
           } h-full bg-purple-100 -z-1`}
         ></div>
@@ -44,7 +44,7 @@ export default function TopBar() {
           <div
             key={i}
             className={`transition-all ease-[cubic-bezier(.48,2.63,.51,1.02)] duration-150 rounded-full border-2 ${
-              i < gameState.moves
+              i < game.moves
                 ? "bg-purple-400 border-purple-300 w-4.5 h-4.5"
                 : "bg-purple-100 border-purple-50 w-2.5 h-2.5"
             }`}

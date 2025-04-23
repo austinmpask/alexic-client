@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { GameStateContext } from "../GameState";
 
 export default function TutorialModalContent() {
-  const { gameInfo } = useContext(GameStateContext);
+  const game = useContext(GameStateContext);
   return (
     <div className="flex-col flex items-center gap-6 text-sm text-neutral-500">
       <div className="flex flex-col items-center">
@@ -14,10 +14,10 @@ export default function TutorialModalContent() {
         </p>
       </div>
       <div className="font-semibold tracking-widest flex flex-col items-center text-lg text-neutral-950 gap-2 mb-2">
-        <span className="text-lg tracking-widest">{gameInfo.startWord}</span>
+        <span className="text-lg tracking-widest">{game.startWord}</span>
         <MoveDown size={18} />
         <span className="text-amber-500 mt-1 box-glow inline-flex items-center bg-amber-100 border-amber-200 border-2 rounded-2xl font-semibold tracking-widest py-2 px-3">
-          <Pyramid size={18} className="mr-1" /> {gameInfo.goldenWord}
+          <Pyramid size={18} className="mr-1" /> {game.goldenWord}
         </span>
       </div>
       <div className="flex flex-col items-center">
@@ -29,21 +29,21 @@ export default function TutorialModalContent() {
         {/* <p>a new valid English word</p> */}
       </div>
       <div className="grid grid-cols-3 place-items-center text-lg text-neutral-950 w-4/6 font-semibold tracking-widest">
-        <p className="w-full text-right">{gameInfo.startWord}</p>
+        <p className="w-full text-right">{game.startWord}</p>
         <MoveRight />
         <p className="w-full text-left relative">
-          <span className="text-green-500">{gameInfo.example[0]}</span>
-          {gameInfo.example.substring(1)}
+          <span className="text-green-500">{game.example[0]}</span>
+          {game.example.substring(1)}
           <Check
             className="absolute text-green-500 top-[3px] -right-8"
             size={20}
           />
         </p>
-        <p className="w-full text-right">{gameInfo.startWord}</p>
+        <p className="w-full text-right">{game.startWord}</p>
         <MoveRight />
         <p className="w-full text-left relative">
-          <span className="text-rose-500">{gameInfo.badExample[0]}</span>
-          {gameInfo.badExample.substring(1)}
+          <span className="text-rose-500">{game.badExample[0]}</span>
+          {game.badExample.substring(1)}
           <X className="absolute text-rose-500 top-[3px] -right-8" size={20} />
         </p>
       </div>
@@ -51,11 +51,11 @@ export default function TutorialModalContent() {
         <p>
           Can you turn{" "}
           <span className="text-neutral-950 font-bold">
-            {gameInfo.startWord.toLowerCase()}
+            {game.startWord.toLowerCase()}
           </span>{" "}
           into{" "}
           <span className="font-bold text-amber-500">
-            {gameInfo.goldenWord.toLowerCase()}
+            {game.goldenWord.toLowerCase()}
           </span>{" "}
         </p>
         <p>in under 10 transformations?</p>

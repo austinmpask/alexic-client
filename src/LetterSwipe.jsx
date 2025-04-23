@@ -5,37 +5,29 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { GameStateContext } from "./GameState";
 import { alphabet } from "./config";
 import { toSliderIndex, toRawIndex, toCombo } from "./utils";
+import { UIContext } from "./UIState";
 
-export default function LetterSwipe({
-  i,
-  val,
-  setVal,
-  lastTouched,
-  setLastTouched,
-}) {
+export default function LetterSwipe({ i }) {
   // Ref for this slider instance
   const swiperRef = useRef(null);
 
-  const { gameState, setGameState } = useContext(GameStateContext);
+  const game = useContext(GameStateContext);
+  const { isHistoryOpen, closeHistory, lastTouched, touch } =
+    useContext(UIContext);
 
   // Convert the raw index to the adjusted slider display index
-  const slideIndex = toSliderIndex(val);
+  const slideIndex = toSliderIndex(game.combo[i]);
 
   useEffect(() => {
     if (swiperRef.current && lastTouched !== i) {
-      const w = toCombo(gameState.usedWords[gameState.usedWords.length - 1])[i];
+      const w = toCombo(game.getLastWord())[i];
       swiperRef.current.slideTo(w + 3 === 0 ? 25 : w + 2, 450);
     }
-    gameState.isHistoryOpen &&
-      setGameState((p) => ({
-        ...p,
-        isHistoryOpen: false,
-      }));
-  }, [lastTouched, val, gameState.usedWords]);
+    isHistoryOpen && closeHistory();
+  }, [lastTouched, game.combo, game.usedWords]);
 
   const handleSlideChange = (swiper) => {
-    setVal(toRawIndex(swiper.realIndex));
-    // setLastTouched(i);
+    game.setComboAt(i, toRawIndex(swiper.realIndex));
   };
 
   return (
@@ -52,10 +44,10 @@ export default function LetterSwipe({
         swiperRef.current = swiper; // Save this swiper index
       }}
       onSlideChange={handleSlideChange}
-      onTouchStart={() => setLastTouched(i)}
-      onAnimationEnd={() => setLastTouched(null)}
+      onTouchStart={() => touch(i)}
+      onAnimationEnd={() => touch(null)}
     >
-      {alphabet.map((l, index) => (
+      {game.alphabet.map((l, index) => (
         <SwiperSlide key={l} virtualIndex={index}>
           <div className="h-full w-full text-center flex flex-col justify-center">
             <p>{l}</p>
