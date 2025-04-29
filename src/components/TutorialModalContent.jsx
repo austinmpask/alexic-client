@@ -5,7 +5,7 @@ import { GameStateContext } from "../GameState";
 export default function TutorialModalContent() {
   const game = useContext(GameStateContext);
   return (
-    <div className="flex-col flex items-center gap-6 text-sm text-neutral-500">
+    <div className="flex-col flex items-center gap-6 text-sm sm:text-lg xl:text-xl text-neutral-500">
       <div className="flex flex-col items-center">
         <p>Create new words from the starting</p>
         <p>word to eventually turn it into today's </p>

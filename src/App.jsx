@@ -82,13 +82,13 @@ export default function App() {
       </ModalFrame>
       {game.stage > 0 && (
         <div className="h-dvh w-dvw relative flex flex-col justify-between items-center pb-12">
-          <div className="w-full flex flex-col gap-6">
+          <div className="w-full sm:w-3/4 lg:w-3/5 xl:w-1/2 flex flex-col gap-6">
             <TopBar />
             <GameHeader />
           </div>
           <div className="w-full">
-            <div className="h-[200px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
-              <div className="grid grid-cols-4 h-full w-full sm:w-1/2 relative z-0">
+            <div className="h-[200px] sm:h-[400px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
+              <div className="grid grid-cols-4 h-full w-full sm:w-1/2 lg:w-1/3 relative z-0">
                 <LetterSwipe i={0} />
                 <LetterSwipe i={1} />
                 <LetterSwipe i={2} />
@@ -108,7 +108,7 @@ export default function App() {
               </AnimatePresence>
             </div>
           </div>
-          <div className="relative grid grid-cols-3 place-items-center w-full">
+          <div className="relative grid grid-cols-3 place-items-center w-full sm:w-3/4 lg:w-3/5 xl:w-1/2">
             <div></div>
             <CoolButton onClick={handleCommit} />
             <button

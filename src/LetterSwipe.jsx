@@ -32,7 +32,7 @@ export default function LetterSwipe({ i }) {
 
   return (
     <Swiper
-      className="h-full w-full text-2xl"
+      className="h-full w-full text-2xl sm:text-4xl xl:font-semibold "
       spaceBetween={0}
       initialSlide={slideIndex} // Set the slider to start on the adjusted index provided
       direction={"vertical"}

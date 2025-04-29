@@ -9,7 +9,7 @@ export default function CoolButton({ onClick }) {
     <button
       onClick={onClick}
       disabled={!game.canSubmit}
-      className={`select-none w-fit group gap-1 relative inline-flex h-16 items-center justify-center overflow-hidden rounded-3xl py-3 px-4 font-medium transition ${
+      className={`select-none w-fit group gap-1 relative inline-flex h-16 sm:h-18 items-center justify-center overflow-hidden rounded-3xl sm:rounded-4xl py-3 sm:px-6 px-4 font-medium transition ${
         game.canSubmit
           ? "scale-110 bg-purple-400 button-glow border-purple-300 border-2 text-white cursor-pointer"
           : "bg-neutral-300 border-2 border-neutral-300 text-neutral-100"
@@ -20,7 +20,7 @@ export default function CoolButton({ onClick }) {
       ) : (
         <WandSparkles size={17} />
       )}
-      <span className="text-lg tracking-widest">
+      <span className="text-lg sm:text-xl tracking-widest">
         {!game.canSubmit ? game.getLastWord() : toWord(game.combo)}
       </span>
       <div
