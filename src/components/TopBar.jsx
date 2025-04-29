@@ -18,11 +18,11 @@ export default function TopBar() {
     "w-10/10",
   ];
   return (
-    <div className="w-full flex flex-row">
+    <div className="w-full flex flex-row sm:my-6">
       <div
-        className={` text-sm px-2 py-1 text-purple-500 bg-purple-200 rounded-r-full flex-row flex justify-center w-fit items-center relative`}
+        className={`button-glow text-sm px-2 py-1 sm:py-2 lg:px-3 text-purple-500 bg-purple-200 rounded-r-full lg:text-lg xl:text-xl sm:rounded-l-full flex-row flex justify-center w-fit items-center relative`}
       >
-        <Flame size={16} />
+        <Flame className="size-3.5 lg:size-5 xl:size-6" />
         <span>{game.difficulty}</span>
       </div>
 
@@ -35,7 +35,7 @@ export default function TopBar() {
           } h-full bg-purple-100 -z-1`}
         ></div>
         <div
-          className={`absolute -left-8 rounded-full spring ${
+          className={`absolute -left-8 rounded-r-full spring ${
             game.moves ? "opacity-100 w-12" : "opacity-50 w-0"
           }
           } h-full bg-purple-100 -z-1`}
@@ -43,10 +43,10 @@ export default function TopBar() {
         {Array.from({ length: 10 }, (_, i) => (
           <div
             key={i}
-            className={`transition-all ease-[cubic-bezier(.48,2.63,.51,1.02)] duration-150 rounded-full border-2 ${
+            className={`transition-all ease-[cubic-bezier(.48,2.63,.51,1.02)] duration-150 rounded-full border-2 md:border-3 ${
               i < game.moves
-                ? "bg-purple-400 border-purple-300 w-4.5 h-4.5"
-                : "bg-purple-100 border-purple-50 w-2.5 h-2.5"
+                ? "button-glow bg-purple-400 border-purple-300 w-4.5 lg:w-6.5 h-4.5 lg:h-6.5"
+                : "bg-purple-100 border-purple-50 w-2.5 lg:w-4 h-2.5 lg:h-4"
             }`}
           ></div>
         ))}

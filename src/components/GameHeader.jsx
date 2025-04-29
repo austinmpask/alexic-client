@@ -34,8 +34,8 @@ export default function GameHeader({}) {
         >
           <Undo />
         </button>
-        <div className="select-none border-2 box-glow border-amber-200 bg-amber-100 rounded-3xl text-lg font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-amber-500 py-3 px-4">
-          <Pyramid size={20} />
+        <div className="select-none border-2 box-glow border-amber-200 bg-amber-100 rounded-3xl text-lg sm:text-2xl font-semibold tracking-widest flex flex-row items-center justify-center gap-2 text-amber-500 py-3 px-4">
+          <Pyramid className="size-4.5 sm:size-6" />
           {game.goldenWord}
         </div>
         <button onClick={() => openModal()} className="px-4 cursor-pointer">
