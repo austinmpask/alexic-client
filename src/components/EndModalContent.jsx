@@ -24,19 +24,40 @@ export default function EndModalContent() {
           {game.stage === 3 ? "moves" : "Haha"}
         </p>
         {game.stage === 3 && (
-          <RWebShare
-            data={{
-              url: url,
-              title: `Got it in ${game.moves} move${
-                game.moves > 1 ? "s" : ""
-              }!`,
-              text: `Got it in ${game.moves} move${game.moves > 1 ? "s" : ""}!`,
-            }}
-          >
-            <button className="plausible-event-name=share cursor-pointer flex bg-purple-400 border-2 button-glow border-purple-300 text-white rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
-              <Link size={20} /> Share
-            </button>
-          </RWebShare>
+          <>
+            <div className="mb-10 mt-3 tracking-widest text-lg flex flex-col items-center gap-1">
+              {game.usedWords.map(
+                (w, i) =>
+                  i > 0 && (
+                    <p
+                      className={`${
+                        i === 0
+                          ? "text-neutral-400"
+                          : i === game.usedWords.length - 1 &&
+                            "text-amber-500 bg-amber-100 box-glow py-1 px-4 rounded-2xl border-2 border-amber-200"
+                      }`}
+                    >
+                      {w}
+                    </p>
+                  )
+              )}
+            </div>
+            <RWebShare
+              data={{
+                url: url,
+                title: `Got it in ${game.moves} move${
+                  game.moves > 1 ? "s" : ""
+                }!`,
+                text: `Got it in ${game.moves} move${
+                  game.moves > 1 ? "s" : ""
+                }!`,
+              }}
+            >
+              <button className="plausible-event-name=share cursor-pointer flex bg-purple-400 border-2 button-glow border-purple-300 text-white rounded-2xl px-3 py-1 flex-row items-center justify-center gap-1">
+                <Link size={20} /> share
+              </button>
+            </RWebShare>
+          </>
         )}
       </div>
       <p className="text-neutral-400 text-sm">

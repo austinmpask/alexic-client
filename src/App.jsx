@@ -19,6 +19,10 @@ export default function App() {
   const { isHistoryOpen, toggleHistory, closeHistory, greyLetters, openModal } =
     useContext(UIContext);
 
+  // useEffect(() => {
+  //   game.moves === 3 && game.setStage(3);
+  // }, [game.moves]);
+
   // Once the modal is initially closed, initiate the game
   useEffect(() => {
     if (game.stage === 1) {
