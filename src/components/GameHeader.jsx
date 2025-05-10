@@ -12,7 +12,7 @@ export default function GameHeader() {
   const goldenRef = useRef();
 
   const animationAmounts = {
-    scale: 1.25,
+    scale: 1.2,
     rotate: 5,
   };
 

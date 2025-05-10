@@ -2,22 +2,28 @@ import "swiper/css";
 import CoolButton from "./CoolButton";
 import EndModalContent from "./components/EndModalContent";
 import GameHeader from "./components/GameHeader";
+import HelpFinger from "./components/HelpFinger";
 import LetterSwipe from "./LetterSwipe";
 import ModalFrame from "./components/ModalFrame";
+import PreviousWords from "./components/PreviousWords";
 import TopBar from "./components/TopBar";
 import TutorialModalContent from "./components/TutorialModalContent";
-import { useContext, useEffect, useState } from "react";
-import { GameStateContext } from "./GameState";
-import { isValidWord, toCombo, toWord } from "./utils";
-import PreviousWords from "./components/PreviousWords";
 import { BookText, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { useContext, useEffect, useState } from "react";
+import { GameStateContext } from "./GameState";
 import { UIContext } from "./UIState";
+import { isValidWord, toCombo, toWord } from "./utils";
 
 export default function App() {
   const game = useContext(GameStateContext);
   const { isHistoryOpen, toggleHistory, closeHistory, greyLetters, openModal } =
     useContext(UIContext);
+
+  const [playerStuck, setPlayerStuck] = useState(true);
+  const [finger, setFinger] = useState(false);
+
+  // const guideRef = useRef();
 
   // useEffect(() => {
   //   game.moves === 3 && game.setStage(3);
@@ -27,6 +33,10 @@ export default function App() {
   useEffect(() => {
     if (game.stage === 1) {
       game.unRoll();
+      // Guide player if they are stuck
+      setTimeout(() => {
+        guidePlayer();
+      }, 6000);
     }
     if (game.stage === 3 || game.stage === 4) {
       setTimeout(() => {
@@ -35,6 +45,20 @@ export default function App() {
     }
   }, [game.stage, game.startWord]);
 
+  useEffect(() => {
+    // Once player swipes a swiper, assume they know how to play
+    if (
+      playerStuck &&
+      toWord(game.combo) !== "AAAA" &&
+      toWord(game.combo) !== game.startWord
+    ) {
+      setPlayerStuck(false);
+    }
+  }, [game.combo]);
+
+  function guidePlayer() {
+    playerStuck && setFinger(true);
+  }
   // Validate the move when a letter is switched
   useEffect(() => {
     // Check if the word is valid
@@ -92,6 +116,7 @@ export default function App() {
           </div>
           <div className="w-full">
             <div className="h-[200px] sm:h-[400px] w-full px-8 select-none relative sm:flex sm:flex-col sm:items-center">
+              {playerStuck && finger && <HelpFinger />}
               <div className="grid grid-cols-4 h-full w-full sm:w-1/2 lg:w-1/3 relative z-0">
                 <LetterSwipe i={0} />
                 <LetterSwipe i={1} />
