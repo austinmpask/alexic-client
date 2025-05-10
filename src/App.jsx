@@ -26,7 +26,7 @@ export default function App() {
   // const guideRef = useRef();
 
   // useEffect(() => {
-  //   game.moves === 3 && game.setStage(3);
+  //   game.moves === 2 && game.setStage(4);
   // }, [game.moves]);
 
   // Once the modal is initially closed, initiate the game

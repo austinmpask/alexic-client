@@ -1,9 +1,10 @@
+import { Link } from "lucide-react";
+import { motion } from "motion/react";
 import { useContext, useEffect } from "react";
-import { GameStateContext } from "../GameState";
 import { useReward } from "react-rewards";
 import { RWebShare } from "react-web-share";
-import { Link } from "lucide-react";
-import { api, emojis, url } from "../config";
+import { GameStateContext } from "../GameState";
+import { url } from "../config";
 
 export default function EndModalContent() {
   const { reward: confettiReward, isAnimating: isConfettiAnimating } =
@@ -18,27 +19,38 @@ export default function EndModalContent() {
       {/* <span id="" className="w-2 h-2 bg-red-500" /> */}
       <div id="confettiReward" className="flex flex-col items-center">
         <p className="text-6xl text-purple-500 font-bold">
-          {game.stage === 3 ? game.moves : "You Lose"}
+          {game.stage === 3 ? game.moves : "You Suck"}
         </p>
         <p className="text-xl text-purple-700 mb-4">
-          {game.stage === 3 ? "moves" : "Haha"}
+          {game.stage === 3 ? "moves" : "(Skill issue)"}
         </p>
         {game.stage === 3 && (
           <>
-            <div className="mb-10 mt-3 tracking-widest text-lg flex flex-col items-center gap-1">
+            <div className="mb-10 mt-3 tracking-widest text-lg font-semibold flex flex-col items-center gap-1">
               {game.usedWords.map(
                 (w, i) =>
                   i > 0 && (
-                    <p
-                      className={`${
-                        i === 0
-                          ? "text-neutral-400"
-                          : i === game.usedWords.length - 1 &&
-                            "text-amber-500 bg-amber-100 box-glow py-1 px-4 rounded-2xl border-2 border-amber-200"
-                      }`}
+                    <motion.div
+                      initial={{ translateY: -10, opacity: 0 }}
+                      animate={{ translateY: 0, opacity: 1 }}
+                      // exit={{ translateY: 30, opacity: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.3 + i / 4,
+                        ease: [0, 0.71, 0.2, 1.01],
+                      }}
                     >
-                      {w}
-                    </p>
+                      <p
+                        className={`${
+                          i === 0
+                            ? "text-neutral-400"
+                            : i === game.usedWords.length - 1 &&
+                              "text-amber-500 bg-amber-100 box-glow py-1 px-4 rounded-2xl border-2 border-amber-200"
+                        }`}
+                      >
+                        {w}
+                      </p>
+                    </motion.div>
                   )
               )}
             </div>

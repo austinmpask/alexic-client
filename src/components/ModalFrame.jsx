@@ -1,12 +1,12 @@
 import Loader from "./Loader";
-import { AnimatePresence, motion } from "motion/react";
-
-// import ReactModal from "react-modal";
 import Logo from "./Logo";
+import { AnimatePresence, motion } from "motion/react";
 import { useContext } from "react";
 import { GameStateContext } from "../GameState";
-import { clientVersion, modalTransition } from "../config";
 import { UIContext } from "../UIState";
+import { clientVersion, modalTransition } from "../config";
+
+// import ReactModal from "react-modal";
 
 // Modal which displays either a loading thing or some child content
 export default function ModalFrame({ children }) {
